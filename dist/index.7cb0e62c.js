@@ -1,0 +1,2 @@
+const e=document.querySelector("#search-form");e.querySelector("#search-query-input");const o=e=>{console.log(`Finding lyrics for: ${e} ...`),console.log(cheerio.load('<h2 class="title">Hello world</h2>')("h2.title").text())},l=e=>{console.log("Handling search query..."),e.preventDefault(),o("https://genius.com/Metallica-the-unforgiven-ii-lyrics")};e.addEventListener("submit",e=>l(e));
+//# sourceMappingURL=index.7cb0e62c.js.map

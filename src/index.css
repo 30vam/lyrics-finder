@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* For hiding scrollbars */
+.hidden-scrollbar {
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none;
+  /* Safari and Chrome */
+}
+
+/* For snapping items in a scrolling container */
+.timepicker-snap {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
+
+/* Scrollbar width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Scrollbar track */
+::-webkit-scrollbar-track {
+  background: none;
+}
+
+/* Scrollbar handle */
+::-webkit-scrollbar-thumb {
+  background: #88888881;
+  border-radius: 20px;
+}
+
+/* Scrollbar handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555555b7;
+}
+
+progress {
+  border-radius: 10px;
+  width: 80%;
+  height: 20px;
+}
+
+progress::-webkit-progress-bar {
+  background-color: rgba(128, 128, 128, 0.63);
+  border-radius: 10px;
+}
+
+progress::-webkit-progress-value {
+  background-color: #80ed99af;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 5px rgba(0, 255, 234, 0.226);
+}
+
+progress::-moz-progress-bar {
+  background-color: #80ed99af;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 5px rgba(0, 255, 234, 0.226);
+}
