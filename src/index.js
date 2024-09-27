@@ -1,9 +1,9 @@
+// Imports
+import getLyrics from './getLyrics';
+
 // Elements
 const searchForm = document.querySelector('#search-form');
 const searchQueryInput = searchForm.querySelector('#search-query-input');
-
-// Variables
-const apiKey = 'DhHHeybvqFeTNd6IaRqtzcrtUqoLOfpNpwkRoNxr7oB42hAqelp-MKOjEyY9ybLK';
 
 // Functions
 /*const checkFileValidation = (fileList) => {
@@ -67,34 +67,18 @@ const sendSongDetectionRequest = async (base64) => {
     }
 }*/
 
-/*const getLyrics = async (songTitle) => {
-    const url = `https://some-random-api.com/lyrics?title=${songTitle}`;
-
-    try {
-        const response = await fetch(url);
-        if (!response.ok)
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        
-        const data = await response.json();
-        const lyrics = data.lyrics;
-
-        console.log(data);
-        if (data.lyrics)
-            console.log(`Lyrics: ${data.lyrics}`);
-        else
-            console.log('No lyrics found.');
-    } 
-    catch (error) {
-        console.log(error);
-    }
-}*/
-import { getLyrics } from "./getLyrics";
+const geniusConfig = {
+    apiKey: 'DhHHeybvqFeTNd6IaRqtzcrtUqoLOfpNpwkRoNxr7oB42hAqelp-MKOjEyY9ybLK',
+    title: 'baby',
+    artist:'justin bieber',
+    optimizeQuery: true
+}
 
 const handleSearchRequest = (event) => {
     console.log('Handling search query...');
     event.preventDefault();
 
-    getLyrics('https://genius.com/The-weeknd-and-playboi-carti-timeless-lyrics');
+    getLyrics('The Unforgive II');
 }
 
 // Events
