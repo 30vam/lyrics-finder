@@ -1,9 +1,9 @@
-// Packages
-//import * as cheerio from 'cheerio';
-
 // Elements
 const searchForm = document.querySelector('#search-form');
 const searchQueryInput = searchForm.querySelector('#search-query-input');
+
+// Variables
+const apiKey = 'DhHHeybvqFeTNd6IaRqtzcrtUqoLOfpNpwkRoNxr7oB42hAqelp-MKOjEyY9ybLK';
 
 // Functions
 /*const checkFileValidation = (fileList) => {
@@ -67,7 +67,7 @@ const sendSongDetectionRequest = async (base64) => {
     }
 }*/
 
-const getLyrics = async (songTitle) => {
+/*const getLyrics = async (songTitle) => {
     const url = `https://some-random-api.com/lyrics?title=${songTitle}`;
 
     try {
@@ -87,13 +87,14 @@ const getLyrics = async (songTitle) => {
     catch (error) {
         console.log(error);
     }
-}
+}*/
+import { getLyrics } from "./getLyrics";
 
 const handleSearchRequest = (event) => {
     console.log('Handling search query...');
     event.preventDefault();
 
-    getLyrics('The Unforgiven II');
+    getLyrics('https://cors-anywhere.herokuapp.com/' + encodeURIComponent('https://genius.com/The-weeknd-and-playboi-carti-timeless-lyrics'));
 }
 
 // Events
