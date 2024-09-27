@@ -673,7 +673,7 @@ const apiKey = "DhHHeybvqFeTNd6IaRqtzcrtUqoLOfpNpwkRoNxr7oB42hAqelp-MKOjEyY9ybLK
 const handleSearchRequest = (event)=>{
     console.log("Handling search query...");
     event.preventDefault();
-    (0, _getLyrics.getLyrics)("https://cors-anywhere.herokuapp.com/" + encodeURIComponent("https://genius.com/The-weeknd-and-playboi-carti-timeless-lyrics"));
+    (0, _getLyrics.getLyrics)("https://genius.com/The-weeknd-and-playboi-carti-timeless-lyrics");
 };
 // Events
 searchForm.addEventListener("submit", (e)=>handleSearchRequest(e));

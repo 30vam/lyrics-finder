@@ -94,7 +94,7 @@ const handleSearchRequest = (event) => {
     console.log('Handling search query...');
     event.preventDefault();
 
-    getLyrics('https://cors-anywhere.herokuapp.com/' + encodeURIComponent('https://genius.com/The-weeknd-and-playboi-carti-timeless-lyrics'));
+    getLyrics('https://genius.com/The-weeknd-and-playboi-carti-timeless-lyrics');
 }
 
 // Events
