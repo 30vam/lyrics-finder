@@ -594,14 +594,14 @@ var _searchSongsDefault = parcelHelpers.interopDefault(_searchSongs);
 const searchForm = document.querySelector("#search-form");
 const searchQueryInput = searchForm.querySelector("#search-query-input");
 // Variables
-const accessToken = "DhHHeybvqFeTNd6IaRqtzcrtUqoLOfpNpwkRoNxr7oB42hAqelp-MKOjEyY9ybLK";
+const accessToken = "NgGLPuC2u63a8o4y1WDu4UNimeMEhPa8oRAl-ekIX37slfle5AUKzEV0oK0ZZo7F";
 const basicGetConfig = {
     /*headers: {
         Authorization: `Bearer ${accessToken}`
     },
     optimizeQuery: true,
     authHeader: true*/ method: "GET",
-    access_token: "DhHHeybvqFeTNd6IaRqtzcrtUqoLOfpNpwkRoNxr7oB42hAqelp-MKOjEyY9ybLK",
+    access_token: accessToken,
     optimizeQuery: true,
     authHeader: false
 };
@@ -723,10 +723,10 @@ module.exports = async (songTitle)=>{
 },{}],"g0Jv7":[function(require,module,exports) {
 const searchEndpoint = "https://api.genius.com/search?q=";
 module.exports = async (searchQuery, requestConfig)=>{
-    const searchUrl = `${searchEndpoint}${encodeURIComponent(searchQuery)}`;
+    const searchUrl = `${searchEndpoint}${encodeURIComponent(searchQuery)}&access_token=${requestConfig.access_token}`;
     console.log(requestConfig);
     try {
-        const response = await fetch(searchUrl, requestConfig);
+        const response = await fetch(searchUrl);
         if (!response.ok) throw new Error(`Search API Error:\n Status code: ${response.status}`);
         const data = await response.json();
         return data;
