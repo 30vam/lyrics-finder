@@ -666,7 +666,7 @@ const sendSongDetectionRequest = async (base64) => {
 }*/ const handleSearchRequest = (event)=>{
     console.log("Handling search query...");
     event.preventDefault();
-    console.log((0, _searchSongsDefault.default)("metallica", basicGetConfig));
+    console.log((0, _searchSongsDefault.default)("nirvana", basicGetConfig));
 //getLyrics('The Unforgive II');
 };
 // Events

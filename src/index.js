@@ -90,7 +90,7 @@ const handleSearchRequest = (event) => {
     console.log('Handling search query...');
     event.preventDefault();
 
-    console.log(searchSongs('metallica', basicGetConfig));
+    console.log(searchSongs('nirvana', basicGetConfig));
     //getLyrics('The Unforgive II');
 }
 
