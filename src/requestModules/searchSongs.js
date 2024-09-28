@@ -11,6 +11,8 @@ module.exports = async (searchQuery, accessToken) => {
             throw new Error(`Search API Error:\n Status code: ${response.status}`);
         
         const data = await response.json();
+        console.log(data);
+        
         return data;
     } catch (error) {
         console.log('Error trying to fetch from Genius Search API:', error);
