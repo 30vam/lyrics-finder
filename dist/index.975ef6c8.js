@@ -588,9 +588,21 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _getLyrics = require("./getLyrics");
 var _getLyricsDefault = parcelHelpers.interopDefault(_getLyrics);
+var _searchSongs = require("./searchSongs");
+var _searchSongsDefault = parcelHelpers.interopDefault(_searchSongs);
 // Elements
 const searchForm = document.querySelector("#search-form");
 const searchQueryInput = searchForm.querySelector("#search-query-input");
+// Variables
+const accessToken = "DhHHeybvqFeTNd6IaRqtzcrtUqoLOfpNpwkRoNxr7oB42hAqelp-MKOjEyY9ybLK";
+const basicGetConfig = {
+    method: "GET",
+    headers: {
+        Authorization: `Bearer ${accessToken}`
+    },
+    optimizeQuery: true,
+    authHeader: true
+};
 // Functions
 /*const checkFileValidation = (fileList) => {
     console.log('Checking file format...');
@@ -651,21 +663,16 @@ const sendSongDetectionRequest = async (base64) => {
     } catch (error) {
         console.log(error);
     }
-}*/ const geniusConfig = {
-    apiKey: "DhHHeybvqFeTNd6IaRqtzcrtUqoLOfpNpwkRoNxr7oB42hAqelp-MKOjEyY9ybLK",
-    title: "baby",
-    artist: "justin bieber",
-    optimizeQuery: true
-};
-const handleSearchRequest = (event)=>{
+}*/ const handleSearchRequest = (event)=>{
     console.log("Handling search query...");
     event.preventDefault();
-    (0, _getLyricsDefault.default)("The Unforgive II");
+    console.log((0, _searchSongsDefault.default)("metallica", basicGetConfig));
+//getLyrics('The Unforgive II');
 };
 // Events
 searchForm.addEventListener("submit", (e)=>handleSearchRequest(e));
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./getLyrics":"f0kco"}],"gkKU3":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./getLyrics":"f0kco","./searchSongs":"g0Jv7"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -708,6 +715,20 @@ module.exports = async (songTitle)=>{
         else console.log("No lyrics found.");
     } catch (error) {
         console.log(error);
+    }
+};
+
+},{}],"g0Jv7":[function(require,module,exports) {
+const searchEndpoint = "https://api.genius.com/search?q=";
+module.exports = async (searchQuery, requestConfig)=>{
+    const searchUrl = `${searchEndpoint}${encodeURIComponent(searchQuery)}`;
+    try {
+        const response = await fetch(searchUrl, requestConfig);
+        if (!response.ok) throw new Error(`Search API Error: ${response.message}.\n Status code: ${response.status}`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error trying to fetch from Genius Search API:", error);
     }
 };
 

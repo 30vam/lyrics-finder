@@ -1,9 +1,28 @@
 // Imports
 import getLyrics from './getLyrics';
+import searchSongs from './searchSongs';
 
 // Elements
 const searchForm = document.querySelector('#search-form');
 const searchQueryInput = searchForm.querySelector('#search-query-input');
+
+// Variables
+const accessToken = 'DhHHeybvqFeTNd6IaRqtzcrtUqoLOfpNpwkRoNxr7oB42hAqelp-MKOjEyY9ybLK';
+
+const basicGetConfig = {
+    method: 'GET',
+    headers: {
+        Authorization: `Bearer ${accessToken}`
+    },
+    optimizeQuery: true,
+    authHeader: true
+
+    /*access_token: 'DhHHeybvqFeTNd6IaRqtzcrtUqoLOfpNpwkRoNxr7oB42hAqelp-MKOjEyY9ybLK',
+    title: 'the unforgiven',
+    artist:'metallica',
+    optimizeQuery: false,
+    authHeader: false*/
+}
 
 // Functions
 /*const checkFileValidation = (fileList) => {
@@ -67,18 +86,12 @@ const sendSongDetectionRequest = async (base64) => {
     }
 }*/
 
-const geniusConfig = {
-    apiKey: 'DhHHeybvqFeTNd6IaRqtzcrtUqoLOfpNpwkRoNxr7oB42hAqelp-MKOjEyY9ybLK',
-    title: 'baby',
-    artist:'justin bieber',
-    optimizeQuery: true
-}
-
 const handleSearchRequest = (event) => {
     console.log('Handling search query...');
     event.preventDefault();
 
-    getLyrics('The Unforgive II');
+    console.log(searchSongs('metallica', basicGetConfig));
+    //getLyrics('The Unforgive II');
 }
 
 // Events
