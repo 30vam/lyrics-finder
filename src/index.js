@@ -10,18 +10,16 @@ const searchQueryInput = searchForm.querySelector('#search-query-input');
 const accessToken = 'DhHHeybvqFeTNd6IaRqtzcrtUqoLOfpNpwkRoNxr7oB42hAqelp-MKOjEyY9ybLK';
 
 const basicGetConfig = {
-    method: 'GET',
-    headers: {
+    /*headers: {
         Authorization: `Bearer ${accessToken}`
     },
     optimizeQuery: true,
-    authHeader: true
-
-    /*access_token: 'DhHHeybvqFeTNd6IaRqtzcrtUqoLOfpNpwkRoNxr7oB42hAqelp-MKOjEyY9ybLK',
-    title: 'the unforgiven',
-    artist:'metallica',
-    optimizeQuery: false,
-    authHeader: false*/
+    authHeader: true*/
+    
+    method: 'GET',
+    access_token: 'DhHHeybvqFeTNd6IaRqtzcrtUqoLOfpNpwkRoNxr7oB42hAqelp-MKOjEyY9ybLK',
+    optimizeQuery: true,
+    authHeader: false
 }
 
 // Functions

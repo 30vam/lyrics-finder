@@ -596,12 +596,14 @@ const searchQueryInput = searchForm.querySelector("#search-query-input");
 // Variables
 const accessToken = "DhHHeybvqFeTNd6IaRqtzcrtUqoLOfpNpwkRoNxr7oB42hAqelp-MKOjEyY9ybLK";
 const basicGetConfig = {
-    method: "GET",
-    headers: {
+    /*headers: {
         Authorization: `Bearer ${accessToken}`
     },
     optimizeQuery: true,
-    authHeader: true
+    authHeader: true*/ method: "GET",
+    access_token: "DhHHeybvqFeTNd6IaRqtzcrtUqoLOfpNpwkRoNxr7oB42hAqelp-MKOjEyY9ybLK",
+    optimizeQuery: true,
+    authHeader: false
 };
 // Functions
 /*const checkFileValidation = (fileList) => {
@@ -722,13 +724,14 @@ module.exports = async (songTitle)=>{
 const searchEndpoint = "https://api.genius.com/search?q=";
 module.exports = async (searchQuery, requestConfig)=>{
     const searchUrl = `${searchEndpoint}${encodeURIComponent(searchQuery)}`;
+    console.log(requestConfig);
     try {
         const response = await fetch(searchUrl, requestConfig);
-        if (!response.ok) throw new Error(`Search API Error: ${response.message}.\n Status code: ${response.status}`);
+        if (!response.ok) throw new Error(`Search API Error:\n Status code: ${response.status}`);
         const data = await response.json();
         return data;
     } catch (error) {
-        console.error("Error trying to fetch from Genius Search API:", error);
+        console.log("Error trying to fetch from Genius Search API:", error);
     }
 };
 
