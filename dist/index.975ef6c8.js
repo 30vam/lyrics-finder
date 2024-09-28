@@ -586,9 +586,9 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 },{}],"8lqZg":[function(require,module,exports) {
 // Imports
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-var _getLyrics = require("./getLyrics");
+var _getLyrics = require("./requestModules/getLyrics");
 var _getLyricsDefault = parcelHelpers.interopDefault(_getLyrics);
-var _searchSongs = require("./searchSongs");
+var _searchSongs = require("./requestModules/searchSongs");
 var _searchSongsDefault = parcelHelpers.interopDefault(_searchSongs);
 // Elements
 const searchForm = document.querySelector("#search-form");
@@ -607,7 +607,7 @@ const handleSearchRequest = async (event)=>{
 // Events
 searchForm.addEventListener("submit", (e)=>handleSearchRequest(e));
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./getLyrics":"f0kco","./searchSongs":"g0Jv7"}],"gkKU3":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./requestModules/getLyrics":"52zQ6","./requestModules/searchSongs":"jBUqz"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -637,7 +637,7 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"f0kco":[function(require,module,exports) {
+},{}],"52zQ6":[function(require,module,exports) {
 module.exports = async (songTitle)=>{
     const url = `https://some-random-api.com/lyrics?title=${songTitle}`;
     try {
@@ -653,7 +653,7 @@ module.exports = async (songTitle)=>{
     }
 };
 
-},{}],"g0Jv7":[function(require,module,exports) {
+},{}],"jBUqz":[function(require,module,exports) {
 const searchEndpoint = "https://api.genius.com/search?q=";
 module.exports = async (searchQuery, accessToken)=>{
     const searchUrl = `${searchEndpoint}${encodeURIComponent(searchQuery)}&access_token=${accessToken}`;

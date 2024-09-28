@@ -1,6 +1,6 @@
 // Imports
-import getLyrics from './getLyrics';
-import searchSongs from './searchSongs';
+import getLyrics from './requestModules/getLyrics';
+import searchSongs from './requestModules/searchSongs';
 
 // Elements
 const searchForm = document.querySelector('#search-form');
