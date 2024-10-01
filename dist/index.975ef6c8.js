@@ -586,10 +586,10 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 },{}],"8lqZg":[function(require,module,exports) {
 // Imports
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-var _getLyrics = require("./requestModules/getLyrics");
-var _getLyricsDefault = parcelHelpers.interopDefault(_getLyrics);
 var _searchSongs = require("./requestModules/searchSongs");
 var _searchSongsDefault = parcelHelpers.interopDefault(_searchSongs);
+var _getSongData = require("./requestModules/getSongData");
+var _getSongDataDefault = parcelHelpers.interopDefault(_getSongData);
 // Elements
 const searchForm = document.querySelector("#search-form");
 const searchQueryInput = searchForm.querySelector("#search-query-input");
@@ -600,34 +600,54 @@ const accessToken = "NgGLPuC2u63a8o4y1WDu4UNimeMEhPa8oRAl-ekIX37slfle5AUKzEV0oK0
 const clearDiv = (divToClear)=>{
     divToClear.replaceChildren();
 };
+const displaySongInfo = (songId)=>{
+    clearDiv(infoWrapper);
+    (0, _getSongDataDefault.default)(songId, accessToken);
+    const songInfoWrapper = document.createElement("div");
+    songInfoWrapper.classList.add("w-full", "h-full", "flex");
+    infoWrapper.append(songInfoWrapper);
+};
+const returnHitData = (hit)=>{
+    const hitData = {
+        id: hit.result.id,
+        type: hit.type,
+        title: hit.result.title_with_featured,
+        artistName: hit.result.artist_names,
+        songImageThumbnailUrl: hit.result.header_image_thumbnail_url,
+        songImageUrl: hit.result.header_image_url,
+        artistHeaderImageUrl: hit.result.primary_artist.header_image_url,
+        artistImageUrl: hit.result.primary_artist.header_image_url,
+        releaseDate: hit.result.release_date_with_abbreviated_month_for_display
+    };
+    return hitData;
+};
+const createNewSearchResult = (hitData)=>{
+    const newItem = document.createElement("div");
+    newItem.classList.add("rounded-2xl", "relative", "bg-opacity-30", "backdrop-blur-xl", "hover:bg-opacity-60", "overflow-clip", "transition-all", "min-w-[256px]", "h-[256px]");
+    const itemThumbnail = document.createElement("img");
+    itemThumbnail.classList.add("w-full", "hover:scale-125", "transition-all");
+    itemThumbnail.setAttribute("src", hitData.songImageUrl);
+    const songInfo = document.createElement("div");
+    songInfo.classList.add("backdrop-blur-[2px]", "bg-black", "bg-opacity-20", "hover:bg-opacity-40", "shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]", "hover:text-orange-500", "hover:cursor-pointer", "transition-all", "w-full", "h-fit", "py-2", "text-center", "absolute", "bottom-0");
+    songInfo.innerText = `${hitData.artistName} - ${hitData.releaseDate}`;
+    const songTitle = document.createElement("div");
+    songTitle.classList.add("font-bold", "text-base", "mb-2");
+    songTitle.innerText = hitData.title;
+    // Event Listeners
+    songInfo.addEventListener("click", ()=>displaySongInfo(hitData.id));
+    // Append elements to wrappers
+    songInfo.prepend(songTitle);
+    newItem.append(itemThumbnail);
+    newItem.append(songInfo);
+    return newItem;
+};
 const displaySearchResults = (searchResults)=>{
     const hits = searchResults.response.hits;
     console.log(searchResults.response.hits);
     for (const hit of hits){
-        const id = hit.result.id;
-        const type = hit.type;
-        const title = hit.result.title_with_featured;
-        const artistName = hit.result.artist_names;
-        const songImageThumbnailUrl = hit.result.header_image_thumbnail_url;
-        const songImageUrl = hit.result.header_image_url;
-        const artistHeaderImageUrl = hit.result.primary_artist.header_image_url;
-        const artistImageUrl = hit.result.primary_artist.header_image_url;
-        const releaseDate = hit.result.release_date_with_abbreviated_month_for_display;
-        const newItem = document.createElement("div");
-        newItem.classList.add("rounded-2xl", "relative", "bg-opacity-30", "backdrop-blur-xl", "hover:bg-opacity-60", "overflow-clip", "transition-all", "min-w-[256px]", "h-[256px]");
-        const itemThumbnail = document.createElement("img");
-        itemThumbnail.classList.add("w-full", "hover:scale-125", "transition-all");
-        itemThumbnail.setAttribute("src", songImageUrl);
-        const songInfo = document.createElement("div");
-        songInfo.classList.add("backdrop-blur-[2px]", "bg-black", "bg-opacity-20", "hover:bg-opacity-40", "shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]", "hover:text-orange-500", "transition-all", "w-full", "h-fit", "py-2", "text-center", "absolute", "bottom-0");
-        songInfo.innerText = `${artistName} - ${releaseDate}`;
-        const songTitleDiv = document.createElement("div");
-        songTitleDiv.classList.add("font-bold", "text-base", "mb-2");
-        songTitleDiv.innerText = title;
-        songInfo.prepend(songTitleDiv);
-        newItem.append(itemThumbnail);
-        newItem.append(songInfo);
-        infoWrapper.append(newItem);
+        const hitData = returnHitData(hit);
+        const newSearchResult = createNewSearchResult(hitData);
+        infoWrapper.append(newSearchResult);
     }
 };
 const handleSearchRequest = async (event)=>{
@@ -643,7 +663,7 @@ const handleSearchRequest = async (event)=>{
 // Events
 searchForm.addEventListener("submit", (e)=>handleSearchRequest(e));
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./requestModules/getLyrics":"52zQ6","./requestModules/searchSongs":"jBUqz"}],"gkKU3":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./requestModules/searchSongs":"jBUqz","./requestModules/getSongData":"8icSn"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -673,35 +693,35 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"52zQ6":[function(require,module,exports) {
-module.exports = async (songTitle)=>{
-    const url = `https://some-random-api.com/lyrics?title=${songTitle}`;
-    try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-        const data = await response.json();
-        const lyrics = data.lyrics;
-        console.log(data);
-        if (data.lyrics) console.log(`Lyrics: ${data.lyrics}`);
-        else console.log("No lyrics found.");
-    } catch (error) {
-        console.log(error);
-    }
-};
-
 },{}],"jBUqz":[function(require,module,exports) {
 const searchEndpoint = "https://api.genius.com/search?q=";
 module.exports = async (searchQuery, accessToken)=>{
-    const searchUrl = `${searchEndpoint}${encodeURIComponent(searchQuery)}&access_token=${accessToken}`;
-    console.log("Requesting search URL:", searchUrl);
+    const requestUrl = `${searchEndpoint}${encodeURIComponent(searchQuery)}&access_token=${accessToken}`;
     try {
-        const response = await fetch(searchUrl);
+        const response = await fetch(requestUrl);
+        console.log(response);
         if (!response.ok) throw new Error(`Search API Error:\n Status code: ${response.status}`);
         const data = await response.json();
         console.log(data);
         return data;
     } catch (error) {
-        console.log("Error trying to fetch from Genius Search API:", error);
+        console.log("Error trying to fetch from Search API:", error);
+    }
+};
+
+},{}],"8icSn":[function(require,module,exports) {
+const songEndpoint = "https://api.genius.com/songs/";
+module.exports = async (songId, accessToken)=>{
+    const requestUrl = `${songEndpoint}${songId}?access_token=${accessToken}`;
+    try {
+        const response = await fetch(requestUrl);
+        console.log(response);
+        if (!response.ok) throw new Error(`Error trying to get song data - status code : ${response.status}`);
+        const data = await response.json();
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.log("Error trying to fetch song data API:", error);
     }
 };
 
