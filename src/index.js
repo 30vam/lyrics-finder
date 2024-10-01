@@ -27,7 +27,7 @@ const displaySearchResults = (searchResults) => {
         const releaseDate = hit.result.release_date_with_abbreviated_month_for_display;
         
         const newItem = document.createElement('div');
-        newItem.classList.add('rounded-2xl', 'relative', 'bg-opacity-30', 'backdrop-blur-xl', 'hover:bg-opacity-60', 'overflow-clip', 'transition-all', 'w-[40%]');
+        newItem.classList.add('rounded-2xl', 'relative', 'bg-opacity-30', 'backdrop-blur-xl', 'hover:bg-opacity-60', 'overflow-clip', 'transition-all', 'w-[256px]', 'h-[256px]');
         const itemThumbnail = document.createElement('img');
         itemThumbnail.classList.add('w-full', 'hover:scale-125', 'transition-all');
         itemThumbnail.setAttribute('src', songImageThumbnailUrl);
@@ -35,7 +35,7 @@ const displaySearchResults = (searchResults) => {
         songInfo.classList.add('backdrop-blur-md', 'hover:text-orange-500', 'transition-all', 'w-full', 'h-fit', 'py-2','text-center', 'absolute', 'bottom-0');
         songInfo.innerText = `${artistName} - ${releaseDate}`;
         const songTitleDiv = document.createElement('div');
-        songTitleDiv.classList.add('font-bold', 'text-lg', 'mb-2');
+        songTitleDiv.classList.add('font-bold', 'text-base', 'mb-2');
         songTitleDiv.innerText = title;
 
         songInfo.prepend(songTitleDiv);
