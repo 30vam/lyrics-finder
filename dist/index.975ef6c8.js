@@ -597,6 +597,9 @@ const infoWrapper = document.querySelector("#info-wrapper");
 // Variables
 const accessToken = "NgGLPuC2u63a8o4y1WDu4UNimeMEhPa8oRAl-ekIX37slfle5AUKzEV0oK0ZZo7F";
 // Functions
+const clearDiv = (divToClear)=>{
+    divToClear.replaceChildren();
+};
 const displaySearchResults = (searchResults)=>{
     const hits = searchResults.response.hits;
     console.log(searchResults.response.hits);
@@ -616,7 +619,7 @@ const displaySearchResults = (searchResults)=>{
         itemThumbnail.classList.add("w-full", "hover:scale-125", "transition-all");
         itemThumbnail.setAttribute("src", songImageThumbnailUrl);
         const songInfo = document.createElement("div");
-        songInfo.classList.add("backdrop-blur-md", "hover:text-orange-500", "transition-all", "w-full", "h-fit", "py-2", "text-center", "absolute", "bottom-0");
+        songInfo.classList.add("backdrop-blur-[2px]", "bg-black", "bg-opacity-10", "shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]", "hover:text-orange-500", "transition-all", "w-full", "h-fit", "py-2", "text-center", "absolute", "bottom-0");
         songInfo.innerText = `${artistName} - ${releaseDate}`;
         const songTitleDiv = document.createElement("div");
         songTitleDiv.classList.add("font-bold", "text-base", "mb-2");
@@ -630,8 +633,10 @@ const displaySearchResults = (searchResults)=>{
 const handleSearchRequest = async (event)=>{
     console.log("Handling search query...");
     event.preventDefault();
+    const searchQuery = searchQueryInput.value;
+    clearDiv(infoWrapper);
     // We need to use await here, otherwise it will return the async FUNCTION instead of data, async functions ALWAYS return promise without waiting, so we need to use await
-    const searchResults = await (0, _searchSongsDefault.default)("taylor swift", accessToken);
+    const searchResults = await (0, _searchSongsDefault.default)(searchQuery, accessToken);
     displaySearchResults(searchResults);
 //getLyrics('The Unforgive II');
 };

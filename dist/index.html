@@ -19,12 +19,12 @@
             <form action="" id="search-form" method="post" enctype="multipart/form-data" class="text-center text-base border-white border border-opacity-70 rounded-xl flex items-center justify-center w-[95%] flex-col gap-6 py-4">
                 <div class="text-2xl">Find Lyrics For Any Song</div>
                 <div class="w-[90%] flex gap-2">
-                    <input type="text" name="search-query" id="search-query-input" accept="audio/*" placeholder="Seach a song, artist, etc..." class="w-3/4 px-2 py-1 text-black rounded-lg focus:outline-none">
+                    <input type="text" name="search-query" id="search-query-input" required="" accept="audio/*" placeholder="Seach a song, artist, etc..." class="w-3/4 px-2 py-1 text-black rounded-lg focus:outline-none">
                     <button type="submit" class="flex-1 p-1 transition-all bg-green-500 rounded-lg hover:bg-green-600">Search</button>
                 </div>
             </form>
 
-            <div id="info-wrapper" class="border p-2 border-white rounded-lg border-opacity-70 w-[95%] h-full grid justify-items-center gap-3 overflow-y-auto text-sm">
+            <div id="info-wrapper" class="border p-2 back border-white rounded-lg border-opacity-70 w-[95%] h-full grid justify-items-center gap-3 overflow-y-auto text-sm">
             </div>
         </section>
     </main>
