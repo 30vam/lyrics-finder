@@ -446,6 +446,10 @@ img, video {
   padding-bottom: 1.5rem;
 }
 
+.text-left {
+  text-align: left;
+}
+
 .text-center {
   text-align: center;
 }
@@ -607,6 +611,10 @@ progress::-moz-progress-bar {
 @media (width >= 768px) {
   .md\:flex-row {
     flex-direction: row;
+  }
+
+  .md\:text-left {
+    text-align: left;
   }
 }
 

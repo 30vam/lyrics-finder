@@ -14,12 +14,13 @@ module.exports = async (songTitle) => {
         if (data.lyrics)
             result = `${data.lyrics}`;
         else
-            result = 'No lyrics found.';
+            result = 'Sorry, no lyrics available for this song.';
 
         console.log(result);
         return result;
     } 
     catch (error) {
         console.log(error);
+        return `Sorry, no lyrics were found for this song - ${error}`;
     }
 }

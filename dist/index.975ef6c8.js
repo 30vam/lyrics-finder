@@ -602,21 +602,21 @@ const accessToken = "NgGLPuC2u63a8o4y1WDu4UNimeMEhPa8oRAl-ekIX37slfle5AUKzEV0oK0
 const clearDiv = (divToClear)=>{
     divToClear.replaceChildren();
 };
-const shortenSongName = (songName)=>{
+const correctSongName = (songName)=>{
     const parts = songName.split(/[\[\(]/); // Split at `[` or `(`
     return parts[0]; // Return the part before the split
 };
 const displaySongInfo = async (hitData)=>{
-    const songNameForLyricsApi = `${hitData.artistName}-${shortenSongName(hitData.title)}`;
+    const songNameForLyricsApi = `${hitData.artistName}-${correctSongName(hitData.title)}`;
     clearDiv(infoWrapper);
     const songData = await (0, _getSongDataDefault.default)(hitData.id, accessToken);
     const lyrics = await (0, _getLyricsDefault.default)(songNameForLyricsApi);
     const songAndLyricsWrapper = document.createElement("div");
-    songAndLyricsWrapper.classList.add("w-full", "h-full", "flex", "flex-col", "md:flex-row", "overflow-y-auto", "text-center");
+    songAndLyricsWrapper.classList.add("w-full", "h-full", "flex", "flex-col", "md:flex-row", "text-center");
     const songInfoAndImageWrapper = document.createElement("div");
     songInfoAndImageWrapper.classList.add("w-full", "h-fit", "rounded-lg");
     const lyricsWrapper = document.createElement("div");
-    //lyricsWrapper.classList.add('flex-1');
+    lyricsWrapper.classList.add("text-center", "md:text-left");
     lyricsWrapper.innerText = lyrics;
     const songImg = document.createElement("img");
     songImg.classList.add("w-full");
@@ -767,11 +767,12 @@ module.exports = async (songTitle)=>{
         const data = await response.json();
         const lyrics = data.lyrics;
         if (data.lyrics) result = `${data.lyrics}`;
-        else result = "No lyrics found.";
+        else result = "Sorry, no lyrics available for this song.";
         console.log(result);
         return result;
     } catch (error) {
         console.log(error);
+        return `Sorry, no lyrics were found for this song - ${error}`;
     }
 };
 
