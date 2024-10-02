@@ -600,12 +600,35 @@ const accessToken = "NgGLPuC2u63a8o4y1WDu4UNimeMEhPa8oRAl-ekIX37slfle5AUKzEV0oK0
 const clearDiv = (divToClear)=>{
     divToClear.replaceChildren();
 };
-const displaySongInfo = (songId)=>{
+const displaySongInfo = async (hitData)=>{
     clearDiv(infoWrapper);
-    (0, _getSongDataDefault.default)(songId, accessToken);
-    const songInfoWrapper = document.createElement("div");
-    songInfoWrapper.classList.add("w-full", "h-full", "flex");
-    infoWrapper.append(songInfoWrapper);
+    const songData = await (0, _getSongDataDefault.default)(hitData.id, accessToken);
+    const songAndLyricsWrapper = document.createElement("div");
+    songAndLyricsWrapper.classList.add("w-full", "h-full", "flex", "flex-col", "md:flex-row", "overflow-y-auto", "text-center");
+    const songInfoAndImageWrapper = document.createElement("div");
+    songInfoAndImageWrapper.classList.add("w-full", "h-fit", "rounded-lg");
+    const lyricsWrapper = document.createElement("div");
+    lyricsWrapper.classList.add("flex-1");
+    const songImg = document.createElement("img");
+    songImg.classList.add("w-full");
+    songImg.classList.add("rounded-lg");
+    songImg.setAttribute("src", hitData.songImageUrl);
+    const songInfo = document.createElement("ul");
+    songInfo.classList.add("text-center", "flex", "flex-col", "gap-3", "mt-2");
+    const songTitle = document.createElement("li");
+    songTitle.classList.add("font-bold");
+    songTitle.innerText = `${hitData.title}`;
+    const artistName = document.createElement("li");
+    artistName.innerText = `${hitData.artistName}`;
+    const releaseDate = document.createElement("li");
+    releaseDate.innerText = `${hitData.releaseDate}`;
+    const songAlbum = document.createElement("li");
+    songAlbum.innerText = `${songData.response.song.album.name}`;
+    songInfo.append(songTitle, artistName, releaseDate, songAlbum);
+    songInfoAndImageWrapper.append(songImg);
+    songInfoAndImageWrapper.append(songInfo);
+    songAndLyricsWrapper.append(songInfoAndImageWrapper);
+    infoWrapper.append(songAndLyricsWrapper, lyricsWrapper);
 };
 const returnHitData = (hit)=>{
     const hitData = {
@@ -634,7 +657,7 @@ const createNewSearchResult = (hitData)=>{
     songTitle.classList.add("font-bold", "text-base", "mb-2");
     songTitle.innerText = hitData.title;
     // Event Listeners
-    songInfo.addEventListener("click", ()=>displaySongInfo(hitData.id));
+    songInfo.addEventListener("click", ()=>displaySongInfo(hitData));
     // Append elements to wrappers
     songInfo.prepend(songTitle);
     newItem.append(itemThumbnail);

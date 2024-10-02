@@ -15,13 +15,37 @@ const clearDiv = (divToClear) => {
     divToClear.replaceChildren();
 }
 
-const displaySongInfo = (songId) => {
+const displaySongInfo = async (hitData) => {
     clearDiv(infoWrapper);
-    getSongData(songId, accessToken);
+    const songData = await getSongData(hitData.id, accessToken);
 
-    const songInfoWrapper = document.createElement('div');
-    songInfoWrapper.classList.add('w-full', 'h-full', 'flex');
-    infoWrapper.append(songInfoWrapper)
+    const songAndLyricsWrapper = document.createElement('div');
+    songAndLyricsWrapper.classList.add('w-full', 'h-full', 'flex', 'flex-col', 'md:flex-row', 'overflow-y-auto', 'text-center');
+    const songInfoAndImageWrapper = document.createElement('div');
+    songInfoAndImageWrapper.classList.add('w-full', 'h-fit', 'rounded-lg');
+    const lyricsWrapper = document.createElement('div');
+    lyricsWrapper.classList.add('flex-1');
+    const songImg = document.createElement('img');
+    songImg.classList.add('w-full');
+    songImg.classList.add('rounded-lg');
+    songImg.setAttribute('src', hitData.songImageUrl);
+    const songInfo = document.createElement('ul');
+    songInfo.classList.add('text-center', 'flex', 'flex-col', 'gap-3', 'mt-2');
+    const songTitle = document.createElement('li');
+    songTitle.classList.add('font-bold');
+    songTitle.innerText = `${ hitData.title }`;
+    const artistName = document.createElement('li');
+    artistName.innerText = `${ hitData.artistName }`;
+    const releaseDate = document.createElement('li');
+    releaseDate.innerText = `${ hitData.releaseDate }`;
+    const songAlbum = document.createElement('li');
+    songAlbum.innerText = `${ songData.response.song.album.name }`;
+
+    songInfo.append(songTitle, artistName, releaseDate, songAlbum);
+    songInfoAndImageWrapper.append(songImg);
+    songInfoAndImageWrapper.append(songInfo);
+    songAndLyricsWrapper.append(songInfoAndImageWrapper);
+    infoWrapper.append(songAndLyricsWrapper, lyricsWrapper);
 }
 
 const returnHitData = (hit) => {
@@ -54,7 +78,7 @@ const createNewSearchResult = (hitData) => {
     songTitle.innerText = hitData.title;
 
     // Event Listeners
-    songInfo.addEventListener('click', () => displaySongInfo( hitData.id));
+    songInfo.addEventListener('click', () => displaySongInfo(hitData));
 
     // Append elements to wrappers
     songInfo.prepend(songTitle);
