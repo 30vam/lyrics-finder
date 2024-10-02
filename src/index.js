@@ -1,6 +1,7 @@
 // Imports
 import searchSongs from './requestModules/searchSongs';
 import getSongData from './requestModules/getSongData';
+import getLyrics from './requestModules/getLyrics';
 
 // Elements
 const searchForm = document.querySelector('#search-form');
@@ -15,16 +16,25 @@ const clearDiv = (divToClear) => {
     divToClear.replaceChildren();
 }
 
+const shortenSongName = (songName) => {
+    const parts = songName.split(/[\[\(]/); // Split at `[` or `(`
+    return parts[0]; // Return the part before the split
+}
+
 const displaySongInfo = async (hitData) => {
+    const songNameForLyricsApi = `${hitData.artistName}-${shortenSongName(hitData.title)}`;
+
     clearDiv(infoWrapper);
     const songData = await getSongData(hitData.id, accessToken);
+    const lyrics = await getLyrics(songNameForLyricsApi);
 
     const songAndLyricsWrapper = document.createElement('div');
     songAndLyricsWrapper.classList.add('w-full', 'h-full', 'flex', 'flex-col', 'md:flex-row', 'overflow-y-auto', 'text-center');
     const songInfoAndImageWrapper = document.createElement('div');
     songInfoAndImageWrapper.classList.add('w-full', 'h-fit', 'rounded-lg');
     const lyricsWrapper = document.createElement('div');
-    lyricsWrapper.classList.add('flex-1');
+    //lyricsWrapper.classList.add('flex-1');
+    lyricsWrapper.innerText = lyrics;
     const songImg = document.createElement('img');
     songImg.classList.add('w-full');
     songImg.classList.add('rounded-lg');
@@ -52,7 +62,7 @@ const returnHitData = (hit) => {
     const hitData = {
         id: hit.result.id,
         type: hit.type,
-        title: hit.result.title_with_featured,
+        title: hit.result.title,
         artistName: hit.result.artist_names,
         songImageThumbnailUrl: hit.result.header_image_thumbnail_url,
         songImageUrl: hit.result.header_image_url,

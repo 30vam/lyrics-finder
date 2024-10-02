@@ -296,14 +296,6 @@ img, video {
   height: 100%;
 }
 
-.h-\[128px\] {
-  height: 128px;
-}
-
-.max-h-\[256px\] {
-  max-height: 256px;
-}
-
 .w-3\/4 {
   width: 75%;
 }

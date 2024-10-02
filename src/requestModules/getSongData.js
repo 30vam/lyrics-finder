@@ -14,6 +14,6 @@ module.exports = async (songId, accessToken) => {
         return data;
     } 
     catch (error) {
-        console.log('Error trying to fetch song data API:', error);
+        console.log('Error trying to fetch song data API: ', error);
     }
 }

@@ -590,6 +590,8 @@ var _searchSongs = require("./requestModules/searchSongs");
 var _searchSongsDefault = parcelHelpers.interopDefault(_searchSongs);
 var _getSongData = require("./requestModules/getSongData");
 var _getSongDataDefault = parcelHelpers.interopDefault(_getSongData);
+var _getLyrics = require("./requestModules/getLyrics");
+var _getLyricsDefault = parcelHelpers.interopDefault(_getLyrics);
 // Elements
 const searchForm = document.querySelector("#search-form");
 const searchQueryInput = searchForm.querySelector("#search-query-input");
@@ -600,15 +602,22 @@ const accessToken = "NgGLPuC2u63a8o4y1WDu4UNimeMEhPa8oRAl-ekIX37slfle5AUKzEV0oK0
 const clearDiv = (divToClear)=>{
     divToClear.replaceChildren();
 };
+const shortenSongName = (songName)=>{
+    const parts = songName.split(/[\[\(]/); // Split at `[` or `(`
+    return parts[0]; // Return the part before the split
+};
 const displaySongInfo = async (hitData)=>{
+    const songNameForLyricsApi = `${hitData.artistName}-${shortenSongName(hitData.title)}`;
     clearDiv(infoWrapper);
     const songData = await (0, _getSongDataDefault.default)(hitData.id, accessToken);
+    const lyrics = await (0, _getLyricsDefault.default)(songNameForLyricsApi);
     const songAndLyricsWrapper = document.createElement("div");
     songAndLyricsWrapper.classList.add("w-full", "h-full", "flex", "flex-col", "md:flex-row", "overflow-y-auto", "text-center");
     const songInfoAndImageWrapper = document.createElement("div");
     songInfoAndImageWrapper.classList.add("w-full", "h-fit", "rounded-lg");
     const lyricsWrapper = document.createElement("div");
-    lyricsWrapper.classList.add("flex-1");
+    //lyricsWrapper.classList.add('flex-1');
+    lyricsWrapper.innerText = lyrics;
     const songImg = document.createElement("img");
     songImg.classList.add("w-full");
     songImg.classList.add("rounded-lg");
@@ -634,7 +643,7 @@ const returnHitData = (hit)=>{
     const hitData = {
         id: hit.result.id,
         type: hit.type,
-        title: hit.result.title_with_featured,
+        title: hit.result.title,
         artistName: hit.result.artist_names,
         songImageThumbnailUrl: hit.result.header_image_thumbnail_url,
         songImageUrl: hit.result.header_image_url,
@@ -686,7 +695,7 @@ const handleSearchRequest = async (event)=>{
 // Events
 searchForm.addEventListener("submit", (e)=>handleSearchRequest(e));
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./requestModules/searchSongs":"jBUqz","./requestModules/getSongData":"8icSn"}],"gkKU3":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./requestModules/searchSongs":"jBUqz","./requestModules/getSongData":"8icSn","./requestModules/getLyrics":"52zQ6"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -744,7 +753,25 @@ module.exports = async (songId, accessToken)=>{
         console.log(data);
         return data;
     } catch (error) {
-        console.log("Error trying to fetch song data API:", error);
+        console.log("Error trying to fetch song data API: ", error);
+    }
+};
+
+},{}],"52zQ6":[function(require,module,exports) {
+module.exports = async (songTitle)=>{
+    const url = `https://some-random-api.com/lyrics?title=${songTitle}`;
+    try {
+        let result;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        const data = await response.json();
+        const lyrics = data.lyrics;
+        if (data.lyrics) result = `${data.lyrics}`;
+        else result = "No lyrics found.";
+        console.log(result);
+        return result;
+    } catch (error) {
+        console.log(error);
     }
 };
 
