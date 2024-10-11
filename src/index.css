@@ -5,6 +5,10 @@
 @layer components {
 
   .song-info-flexbox {
+    @apply flex;
+  }
+
+  .search-result-grid {
     @apply grid;
   }
 
