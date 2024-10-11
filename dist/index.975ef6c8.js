@@ -608,7 +608,7 @@ const showSpinner = ()=>{
     spinner.setAttribute("src", (0, _magnify1X10S200Px200PxSvgDefault.default));
     spinner.setAttribute("alt", "Loading info...");
     spinner.id = "loading-spinner";
-    spinner.classList.add("absolute", "w-32", "h-32", "top-1/2", "left-1/2", "translate-x-[-50%]");
+    spinner.classList.add("absolute", "w-24", "h-24", "top-1/2", "left-1/2", "translate-x-[-50%]");
     infoWrapper.add;
     infoWrapper.append(spinner);
 };
@@ -633,7 +633,7 @@ const displaySongInfo = async (hitData)=>{
     const songInfoAndImageWrapper = document.createElement("div");
     songInfoAndImageWrapper.classList.add("md:h-fit", "md:w-[256px]", "rounded-lg", "overflow-clip");
     const lyricsWrapper = document.createElement("div");
-    lyricsWrapper.classList.add("text-center", "md:text-left");
+    lyricsWrapper.classList.add("text-center", "md:text-left", "md:overflow-y-auto", "flex-1");
     lyricsWrapper.innerText = lyrics;
     const songImg = document.createElement("img");
     songImg.classList.add("rounded-lg", "max-h-[256px]", "m-auto");
@@ -791,7 +791,7 @@ module.exports = async (songTitle)=>{
         return result;
     } catch (error) {
         console.log(error);
-        return `Sorry, no lyrics available for this song...`;
+        return `Sorry, no lyrics are currently available for this song...`;
     }
 };
 

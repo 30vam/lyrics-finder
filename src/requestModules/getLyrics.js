@@ -21,6 +21,6 @@ module.exports = async (songTitle) => {
     } 
     catch (error) {
         console.log(error);
-        return `Sorry, no lyrics available for this song...`;
+        return `Sorry, no lyrics are currently available for this song...`;
     }
 }

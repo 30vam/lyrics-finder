@@ -21,7 +21,7 @@ const showSpinner = () => {
     spinner.setAttribute('src', spinnerImgPath);
     spinner.setAttribute('alt', 'Loading info...');
     spinner.id = 'loading-spinner';
-    spinner.classList.add('absolute', 'w-32' , 'h-32', 'top-1/2', 'left-1/2', 'translate-x-[-50%]');
+    spinner.classList.add('absolute', 'w-24' , 'h-24', 'top-1/2', 'left-1/2', 'translate-x-[-50%]');
 
     infoWrapper.add
     infoWrapper.append(spinner);
@@ -53,7 +53,7 @@ const displaySongInfo = async (hitData) => {
     const songInfoAndImageWrapper = document.createElement('div');
     songInfoAndImageWrapper.classList.add('md:h-fit', 'md:w-[256px]','rounded-lg', 'overflow-clip');
     const lyricsWrapper = document.createElement('div');
-    lyricsWrapper.classList.add('text-center', 'md:text-left');
+    lyricsWrapper.classList.add('text-center', 'md:text-left', 'md:overflow-y-auto', 'flex-1');
     lyricsWrapper.innerText = lyrics;
     const songImg = document.createElement('img');
     songImg.classList.add('rounded-lg', 'max-h-[256px]', 'm-auto');
@@ -70,12 +70,11 @@ const displaySongInfo = async (hitData) => {
 
     // Show album name if it exists
     let songAlbum = document.createElement('li');
-    if (songData.response.song.album) {
+    if (songData.response.song.album)
         songAlbum.innerText = `${ songData.response.song.album.name }`;
-    } else {
+    else
         songAlbum.innerText = 'No album.';
-    }
-
+    
     songInfo.append(songTitle, artistName, releaseDate, songAlbum);
     songInfoAndImageWrapper.append(songImg);
     songInfoAndImageWrapper.append(songInfo);
@@ -125,8 +124,6 @@ const createNewSearchResult = (hitData) => {
 const displaySearchResults = (searchResults) => {
     const hits = searchResults.response.hits;
     console.log(searchResults.response.hits);
-
-    
     
     // Change grid properties when showing song info
     infoWrapper.classList.remove('song-info-flexbox');
