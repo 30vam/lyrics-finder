@@ -611,6 +611,8 @@ const displaySongInfo = async (hitData)=>{
     clearDiv(infoWrapper);
     const songData = await (0, _getSongDataDefault.default)(hitData.id, accessToken);
     const lyrics = await (0, _getLyricsDefault.default)(songNameForLyricsApi);
+    // Change grid properties when showing song info
+    //infoWrapper.classList.add("sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4");
     const songAndLyricsWrapper = document.createElement("div");
     songAndLyricsWrapper.classList.add("w-full", "h-full", "flex", "flex-col", "md:flex-row", "text-center");
     const songInfoAndImageWrapper = document.createElement("div");
@@ -676,6 +678,7 @@ const createNewSearchResult = (hitData)=>{
 const displaySearchResults = (searchResults)=>{
     const hits = searchResults.response.hits;
     console.log(searchResults.response.hits);
+    infoWrapper.classList.add("search-result-grid");
     for (const hit of hits){
         const hitData = returnHitData(hit);
         const newSearchResult = createNewSearchResult(hitData);

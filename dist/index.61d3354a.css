@@ -248,6 +248,24 @@ img, video {
   display: none;
 }
 
+@media (width >= 640px) {
+  .search-result-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width >= 1024px) {
+  .search-result-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (width >= 1536px) {
+  .search-result-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
 .absolute {
   position: absolute;
 }
@@ -276,6 +294,10 @@ img, video {
   display: grid;
 }
 
+.h-8 {
+  height: 2rem;
+}
+
 .h-\[256px\] {
   height: 256px;
 }
@@ -298,6 +320,10 @@ img, video {
 
 .w-3\/4 {
   width: 75%;
+}
+
+.w-8 {
+  width: 2rem;
 }
 
 .w-\[90\%\] {
@@ -332,10 +358,6 @@ img, video {
   justify-content: center;
 }
 
-.justify-items-stretch {
-  justify-items: stretch;
-}
-
 .gap-2 {
   gap: .5rem;
 }
@@ -354,6 +376,14 @@ img, video {
 
 .gap-y-6 {
   row-gap: 1.5rem;
+}
+
+.self-center {
+  align-self: center;
+}
+
+.justify-self-center {
+  justify-self: center;
 }
 
 .overflow-clip {
@@ -444,10 +474,6 @@ img, video {
 .py-6 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
-}
-
-.text-left {
-  text-align: left;
 }
 
 .text-center {
