@@ -592,6 +592,8 @@ var _getSongData = require("./requestModules/getSongData");
 var _getSongDataDefault = parcelHelpers.interopDefault(_getSongData);
 var _getLyrics = require("./requestModules/getLyrics");
 var _getLyricsDefault = parcelHelpers.interopDefault(_getLyrics);
+var _magnify1X10S200Px200PxSvg = require("./img/Magnify@1x-1.0s-200px-200px.svg");
+var _magnify1X10S200Px200PxSvgDefault = parcelHelpers.interopDefault(_magnify1X10S200Px200PxSvg);
 // Elements
 const searchForm = document.querySelector("#search-form");
 const searchQueryInput = searchForm.querySelector("#search-query-input");
@@ -599,23 +601,35 @@ const infoWrapper = document.querySelector("#info-wrapper");
 // Variables
 const accessToken = "NgGLPuC2u63a8o4y1WDu4UNimeMEhPa8oRAl-ekIX37slfle5AUKzEV0oK0ZZo7F";
 // Functions
-const clearDiv = (divToClear)=>{
-    divToClear.replaceChildren();
+const showSpinner = ()=>{
+    infoWrapper.replaceChildren();
+    // Add spinner and center it
+    const spinner = document.createElement("img");
+    spinner.setAttribute("src", (0, _magnify1X10S200Px200PxSvgDefault.default));
+    spinner.setAttribute("alt", "Loading info...");
+    spinner.id = "loading-spinner";
+    spinner.classList.add("absolute", "w-32", "h-32", "top-1/2", "left-1/2", "translate-x-[-50%]");
+    infoWrapper.add;
+    infoWrapper.append(spinner);
 };
-const correctSongName = (songName)=>{
+const removeSpinner = ()=>{
+    // Remove spinner
+    const spinner = infoWrapper.querySelector("#loading-spinner");
+    spinner.remove();
+};
+const correctifySongName = (songName)=>{
     const parts = songName.split(/[\[\(]/); // Split at `[` or `(`
     return parts[0]; // Return the part before the split
 };
 const displaySongInfo = async (hitData)=>{
-    const songNameForLyricsApi = `${hitData.artistName}-${correctSongName(hitData.title)}`;
-    clearDiv(infoWrapper);
+    showSpinner();
+    const songNameForLyricsApi = `${hitData.artistName}-${correctifySongName(hitData.title)}`;
     const songData = await (0, _getSongDataDefault.default)(hitData.id, accessToken);
     const lyrics = await (0, _getLyricsDefault.default)(songNameForLyricsApi);
+    removeSpinner();
     // Change grid properties when showing song info
     infoWrapper.classList.remove("search-result-grid");
     infoWrapper.classList.add("song-info-flexbox");
-    //const songAndLyricsWrapper = document.createElement('div');
-    //songAndLyricsWrapper.classList.add('w-full', 'h-full', 'flex', 'flex-col', 'md:flex-row', 'text-center');
     const songInfoAndImageWrapper = document.createElement("div");
     songInfoAndImageWrapper.classList.add("md:h-fit", "md:w-[256px]", "rounded-lg", "overflow-clip");
     const lyricsWrapper = document.createElement("div");
@@ -690,16 +704,15 @@ const handleSearchRequest = async (event)=>{
     console.log("Handling search query...");
     event.preventDefault();
     const searchQuery = searchQueryInput.value;
-    clearDiv(infoWrapper);
-    // We need to use await here, otherwise it will return the async FUNCTION instead of data, async functions ALWAYS return promise without waiting, so we need to use await
-    const searchResults = await (0, _searchSongsDefault.default)(searchQuery, accessToken);
+    showSpinner();
+    const searchResults = await (0, _searchSongsDefault.default)(searchQuery, accessToken); // We need to use await here, otherwise it will return the async FUNCTION instead of data, async functions ALWAYS return promise without waiting, so we need to use await
+    removeSpinner();
     displaySearchResults(searchResults);
-//getLyrics('The Unforgive II');
 };
 // Events
 searchForm.addEventListener("submit", (e)=>handleSearchRequest(e));
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./requestModules/searchSongs":"jBUqz","./requestModules/getSongData":"8icSn","./requestModules/getLyrics":"52zQ6"}],"gkKU3":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./requestModules/searchSongs":"jBUqz","./requestModules/getSongData":"8icSn","./requestModules/getLyrics":"52zQ6","./img/Magnify@1x-1.0s-200px-200px.svg":"cZMYR"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -776,9 +789,47 @@ module.exports = async (songTitle)=>{
         return result;
     } catch (error) {
         console.log(error);
-        return `Sorry, no lyrics were found for this song - ${error}`;
+        return `Sorry, no lyrics available for this song...`;
     }
 };
+
+},{}],"cZMYR":[function(require,module,exports) {
+module.exports = require("9099022c2fcfa33").getBundleURL("bLxZJ") + "Magnify@1x-1.0s-200px-200px.9380ff54.svg" + "?" + Date.now();
+
+},{"9099022c2fcfa33":"lgJ39"}],"lgJ39":[function(require,module,exports) {
+"use strict";
+var bundleURL = {};
+function getBundleURLCached(id) {
+    var value = bundleURL[id];
+    if (!value) {
+        value = getBundleURL();
+        bundleURL[id] = value;
+    }
+    return value;
+}
+function getBundleURL() {
+    try {
+        throw new Error();
+    } catch (err) {
+        var matches = ("" + err.stack).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^)\n]+/g);
+        if (matches) // The first two stack frames will be this function and getBundleURLCached.
+        // Use the 3rd one, which will be a runtime in the original bundle.
+        return getBaseURL(matches[2]);
+    }
+    return "/";
+}
+function getBaseURL(url) {
+    return ("" + url).replace(/^((?:https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/.+)\/[^/]+$/, "$1") + "/";
+}
+// TODO: Replace uses with `new URL(url).origin` when ie11 is no longer supported.
+function getOrigin(url) {
+    var matches = ("" + url).match(/(https?|file|ftp|(chrome|moz|safari-web)-extension):\/\/[^/]+/);
+    if (!matches) throw new Error("Origin not found");
+    return matches[0];
+}
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+exports.getOrigin = getOrigin;
 
 },{}]},["farZc","8lqZg"], "8lqZg", "parcelRequire981d")
 

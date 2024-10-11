@@ -2,6 +2,7 @@
 import searchSongs from './requestModules/searchSongs';
 import getSongData from './requestModules/getSongData';
 import getLyrics from './requestModules/getLyrics';
+import spinnerImgPath from './img/Magnify@1x-1.0s-200px-200px.svg'
 
 // Elements
 const searchForm = document.querySelector('#search-form');
@@ -12,28 +13,43 @@ const infoWrapper = document.querySelector('#info-wrapper');
 const accessToken = 'NgGLPuC2u63a8o4y1WDu4UNimeMEhPa8oRAl-ekIX37slfle5AUKzEV0oK0ZZo7F';
 
 // Functions
-const clearDiv = (divToClear) => {
-    divToClear.replaceChildren();
+const showSpinner = () => {
+    infoWrapper.replaceChildren();
+
+    // Add spinner and center it
+    const spinner = document.createElement('img');
+    spinner.setAttribute('src', spinnerImgPath);
+    spinner.setAttribute('alt', 'Loading info...');
+    spinner.id = 'loading-spinner';
+    spinner.classList.add('absolute', 'w-32' , 'h-32', 'top-1/2', 'left-1/2', 'translate-x-[-50%]');
+
+    infoWrapper.add
+    infoWrapper.append(spinner);
 }
 
-const correctSongName = (songName) => {
+const removeSpinner = () => {
+    // Remove spinner
+    const spinner = infoWrapper.querySelector('#loading-spinner');
+    spinner.remove();
+}
+
+const correctifySongName = (songName) => {
     const parts = songName.split(/[\[\(]/); // Split at `[` or `(`
     return parts[0]; // Return the part before the split
 }
 
 const displaySongInfo = async (hitData) => {
-    const songNameForLyricsApi = `${ hitData.artistName }-${correctSongName(hitData.title) }`;
 
-    clearDiv(infoWrapper);
+    showSpinner();
+    const songNameForLyricsApi = `${ hitData.artistName }-${ correctifySongName(hitData.title) }`;
     const songData = await getSongData(hitData.id, accessToken);
     const lyrics = await getLyrics(songNameForLyricsApi);
+    removeSpinner();
 
     // Change grid properties when showing song info
     infoWrapper.classList.remove('search-result-grid');
     infoWrapper.classList.add('song-info-flexbox');
 
-    //const songAndLyricsWrapper = document.createElement('div');
-    //songAndLyricsWrapper.classList.add('w-full', 'h-full', 'flex', 'flex-col', 'md:flex-row', 'text-center');
     const songInfoAndImageWrapper = document.createElement('div');
     songInfoAndImageWrapper.classList.add('md:h-fit', 'md:w-[256px]','rounded-lg', 'overflow-clip');
     const lyricsWrapper = document.createElement('div');
@@ -104,6 +120,8 @@ const displaySearchResults = (searchResults) => {
     const hits = searchResults.response.hits;
     console.log(searchResults.response.hits);
 
+    
+    
     // Change grid properties when showing song info
     infoWrapper.classList.remove('song-info-flexbox');
     infoWrapper.classList.add('search-result-grid');
@@ -121,12 +139,11 @@ const handleSearchRequest = async (event) => {
     event.preventDefault();
 
     const searchQuery = searchQueryInput.value;
-    clearDiv(infoWrapper);
-    // We need to use await here, otherwise it will return the async FUNCTION instead of data, async functions ALWAYS return promise without waiting, so we need to use await
-    const searchResults = await searchSongs(searchQuery, accessToken);
-    displaySearchResults(searchResults);
 
-    //getLyrics('The Unforgive II');
+    showSpinner();
+    const searchResults = await searchSongs(searchQuery, accessToken); // We need to use await here, otherwise it will return the async FUNCTION instead of data, async functions ALWAYS return promise without waiting, so we need to use await
+    removeSpinner();
+    displaySearchResults(searchResults);
 }
 
 // Events
