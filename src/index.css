@@ -5,7 +5,7 @@
 @layer components {
 
   .song-info-flexbox {
-    @apply flex;
+    @apply flex flex-col;
   }
 
   .search-result-grid {
@@ -15,6 +15,12 @@
   @screen sm {
     .search-result-grid {
       @apply grid-cols-2;
+    }
+  }
+
+  @screen md {
+    .song-info-flexbox {
+      @apply flex-row;
     }
   }
 

@@ -612,17 +612,17 @@ const displaySongInfo = async (hitData)=>{
     const songData = await (0, _getSongDataDefault.default)(hitData.id, accessToken);
     const lyrics = await (0, _getLyricsDefault.default)(songNameForLyricsApi);
     // Change grid properties when showing song info
-    //infoWrapper.classList.add("sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4");
-    const songAndLyricsWrapper = document.createElement("div");
-    songAndLyricsWrapper.classList.add("w-full", "h-full", "flex", "flex-col", "md:flex-row", "text-center");
+    infoWrapper.classList.remove("search-result-grid");
+    infoWrapper.classList.add("song-info-flexbox");
+    //const songAndLyricsWrapper = document.createElement('div');
+    //songAndLyricsWrapper.classList.add('w-full', 'h-full', 'flex', 'flex-col', 'md:flex-row', 'text-center');
     const songInfoAndImageWrapper = document.createElement("div");
-    songInfoAndImageWrapper.classList.add("w-full", "h-fit", "rounded-lg");
+    songInfoAndImageWrapper.classList.add("md:h-fit", "md:w-[256px]", "rounded-lg", "overflow-clip");
     const lyricsWrapper = document.createElement("div");
     lyricsWrapper.classList.add("text-center", "md:text-left");
     lyricsWrapper.innerText = lyrics;
     const songImg = document.createElement("img");
-    songImg.classList.add("w-full");
-    songImg.classList.add("rounded-lg");
+    songImg.classList.add("rounded-lg", "max-h-[256px]", "m-auto");
     songImg.setAttribute("src", hitData.songImageUrl);
     const songInfo = document.createElement("ul");
     songInfo.classList.add("text-center", "flex", "flex-col", "gap-3", "mt-2");
@@ -638,8 +638,7 @@ const displaySongInfo = async (hitData)=>{
     songInfo.append(songTitle, artistName, releaseDate, songAlbum);
     songInfoAndImageWrapper.append(songImg);
     songInfoAndImageWrapper.append(songInfo);
-    songAndLyricsWrapper.append(songInfoAndImageWrapper);
-    infoWrapper.append(songAndLyricsWrapper, lyricsWrapper);
+    infoWrapper.append(songInfoAndImageWrapper, lyricsWrapper);
 };
 const returnHitData = (hit)=>{
     const hitData = {
@@ -678,6 +677,8 @@ const createNewSearchResult = (hitData)=>{
 const displaySearchResults = (searchResults)=>{
     const hits = searchResults.response.hits;
     console.log(searchResults.response.hits);
+    // Change grid properties when showing song info
+    infoWrapper.classList.remove("song-info-flexbox");
     infoWrapper.classList.add("search-result-grid");
     for (const hit of hits){
         const hitData = returnHitData(hit);
