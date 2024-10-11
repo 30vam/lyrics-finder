@@ -67,8 +67,14 @@ const displaySongInfo = async (hitData) => {
     artistName.innerText = `${ hitData.artistName }`;
     const releaseDate = document.createElement('li');
     releaseDate.innerText = `${ hitData.releaseDate }`;
-    const songAlbum = document.createElement('li');
-    songAlbum.innerText = `${ songData.response.song.album.name }`;
+
+    // Show album name if it exists
+    let songAlbum = document.createElement('li');
+    if (songData.response.song.album) {
+        songAlbum.innerText = `${ songData.response.song.album.name }`;
+    } else {
+        songAlbum.innerText = 'No album.';
+    }
 
     songInfo.append(songTitle, artistName, releaseDate, songAlbum);
     songInfoAndImageWrapper.append(songImg);
