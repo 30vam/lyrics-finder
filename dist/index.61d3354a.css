@@ -506,6 +506,16 @@ img, video {
   padding-bottom: 1.5rem;
 }
 
+.px-1 {
+  padding-left: .25rem;
+  padding-right: .25rem;
+}
+
+.px-3 {
+  padding-left: .75rem;
+  padding-right: .75rem;
+}
+
 .text-center {
   text-align: center;
 }
@@ -680,6 +690,10 @@ progress::-moz-progress-bar {
 
   .md\:w-\[256px\] {
     width: 256px;
+  }
+
+  .md\:w-\[90\%\] {
+    width: 90%;
   }
 
   .md\:overflow-y-auto {
