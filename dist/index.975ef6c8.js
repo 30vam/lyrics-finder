@@ -633,19 +633,20 @@ const displaySongInfo = async (hitData)=>{
     infoWrapper.classList.remove("search-result-grid");
     infoWrapper.classList.add("song-info-flexbox");
     const songInfoAndImageWrapper = document.createElement("div");
-    songInfoAndImageWrapper.classList.add("md:h-fit", "md:w-[256px]", "rounded-lg", "overflow-clip");
+    songInfoAndImageWrapper.classList.add("md:h-full", "md:w-[256px]", "rounded-xl", "text-lg", "flex", "flex-col", "md-semibold");
     const lyricsWrapper = document.createElement("div");
-    lyricsWrapper.classList.add("text-center", "md:text-left", "md:overflow-y-auto", "hidden-scrollbar", "flex-1");
+    lyricsWrapper.classList.add("text-center", "md:text-left", "md:overflow-y-auto", "text-lg", "lg:text-xl", "hidden-scrollbar", "flex-1", "bg-black", "bg-opacity-35", customShadow, "rounded-xl", "p-4", "backdrop-blur-sm");
     lyricsWrapper.innerText = lyrics;
     const songImg = document.createElement("img");
-    songImg.classList.add("rounded-lg", "max-h-[256px]", "m-auto");
+    songImg.classList.add("rounded-lg", "max-h-[256px]", "m-auto", customShadow);
     songImg.setAttribute("src", hitData.songImageUrl);
     const songInfo = document.createElement("ul");
-    songInfo.classList.add("text-center", "flex", "flex-col", "gap-3", "mt-2");
+    songInfo.classList.add("text-center", "flex", "flex-col", "justify-evenly", "gap-3", "mt-2", "bg-black", "bg-opacity-35", customShadow, "rounded-xl", "p-4", "mt-4", "backdrop-blur-sm", "md:flex-grow");
     const songTitle = document.createElement("li");
-    songTitle.classList.add("font-bold");
+    songTitle.classList.add("font-bold", "md:text-4xl", "text-2xl");
     songTitle.innerText = `${hitData.title}`;
     const artistName = document.createElement("li");
+    artistName.classList.add("md:text-2xl", "md:font-bold", "font-semibold", "text-xl");
     artistName.innerText = `${hitData.artistName}`;
     const releaseDate = document.createElement("li");
     releaseDate.innerText = `${hitData.releaseDate}`;
@@ -674,15 +675,15 @@ const returnHitData = (hit)=>{
 };
 const createNewSearchResult = (hitData)=>{
     const newItem = document.createElement("div");
-    newItem.classList.add("rounded-2xl", "relative", "bg-opacity-30", customShadow, "backdrop-blur-xl", "hover:bg-opacity-60", "overflow-clip", "transition-all", "min-w-[256px]", "h-[256px]");
+    newItem.classList.add("rounded-2xl", "relative", customShadow, "overflow-clip", "min-w-[256px]", "h-[256px]");
     const itemThumbnail = document.createElement("img");
     itemThumbnail.classList.add("w-full", "hover:scale-125", "transition-all");
     itemThumbnail.setAttribute("src", hitData.songImageUrl);
     const songInfo = document.createElement("div");
-    songInfo.classList.add("backdrop-blur-[2px]", "bg-black", "bg-opacity-20", "hover:bg-opacity-40", "shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]", "hover:text-orange-500", "hover:cursor-pointer", "transition-all", "w-full", "h-fit", "py-2", "text-center", "absolute", "bottom-0");
+    songInfo.classList.add("backdrop-blur-[2px]", "hardware-accelerated-blur", "text-base", "bg-black", "bg-opacity-20", "hover:bg-opacity-40", "shadow-[0px_4px_16px_rgba(17,17,26,0.5),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]", "hover:text-orange-500", "hover:cursor-pointer", "transition-all", "w-full", "h-fit", "p-2", "text-center", "absolute", "bottom-0");
     songInfo.innerText = `${hitData.artistName} - ${hitData.releaseDate}`;
     const songTitle = document.createElement("div");
-    songTitle.classList.add("font-bold", "text-base", "mb-2");
+    songTitle.classList.add("font-bold", "text-xl", "mb-2");
     songTitle.innerText = hitData.title;
     // Event Listeners
     songInfo.addEventListener("click", ()=>displaySongInfo(hitData));
@@ -707,8 +708,8 @@ const displaySearchResults = (searchResults)=>{
 const handleSearchRequest = async (event)=>{
     console.log("Handling search query...");
     event.preventDefault();
-    const searchQuery = searchQueryInput.value;
     showSpinner();
+    const searchQuery = searchQueryInput.value;
     const searchResults = await (0, _searchSongsDefault.default)(searchQuery, accessToken); // We need to use await here, otherwise it will return the async FUNCTION instead of data, async functions ALWAYS return promise without waiting, so we need to use await
     removeSpinner();
     displaySearchResults(searchResults);
