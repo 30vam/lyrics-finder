@@ -714,37 +714,7 @@ const handleSearchRequest = async (event)=>{
 // Events
 searchForm.addEventListener("submit", (e)=>handleSearchRequest(e));
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./requestModules/searchSongs":"jBUqz","./requestModules/getSongData":"8icSn","./requestModules/getLyrics":"52zQ6","./img/Magnify@1x-1.0s-200px-200px.svg":"cZMYR"}],"gkKU3":[function(require,module,exports) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, "__esModule", {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === "default" || key === "__esModule" || Object.prototype.hasOwnProperty.call(dest, key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
-
-},{}],"jBUqz":[function(require,module,exports) {
+},{"./requestModules/searchSongs":"jBUqz","./requestModules/getSongData":"8icSn","./requestModules/getLyrics":"52zQ6","./img/Magnify@1x-1.0s-200px-200px.svg":"cZMYR","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jBUqz":[function(require,module,exports) {
 const searchEndpoint = "https://api.genius.com/search?q=";
 module.exports = async (searchQuery, accessToken)=>{
     const requestUrl = `${searchEndpoint}${encodeURIComponent(searchQuery)}&access_token=${accessToken}`;
@@ -832,6 +802,36 @@ function getOrigin(url) {
 exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
 exports.getOrigin = getOrigin;
+
+},{}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || Object.prototype.hasOwnProperty.call(dest, key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
 
 },{}]},["farZc","8lqZg"], "8lqZg", "parcelRequire981d")
 
