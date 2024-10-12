@@ -2,7 +2,7 @@
 import searchSongs from './requestModules/searchSongs';
 import getSongData from './requestModules/getSongData';
 import getLyrics from './requestModules/getLyrics';
-import spinnerImgPath from './img/Magnify@1x-1.0s-200px-200px.svg'
+import spinnerImgPath from './img/Double Ring@1x-1.0s-200px-200px.svg'
 
 // Elements
 const searchForm = document.querySelector('#search-form');
@@ -11,6 +11,7 @@ const infoWrapper = document.querySelector('#info-wrapper');
 
 // Variables
 const accessToken = 'NgGLPuC2u63a8o4y1WDu4UNimeMEhPa8oRAl-ekIX37slfle5AUKzEV0oK0ZZo7F';
+const customShadow = 'shadow-[0_2px_15px_rgba(0,0,0,0.5)]'
 
 // Functions
 const showSpinner = () => {
@@ -23,13 +24,14 @@ const showSpinner = () => {
     spinner.id = 'loading-spinner';
     spinner.classList.add('absolute', 'w-24' , 'h-24', 'top-1/2', 'left-1/2', 'translate-x-[-50%]');
 
-    infoWrapper.add
+    infoWrapper.classList.add('bg-black', customShadow);
     infoWrapper.append(spinner);
 }
 
 const removeSpinner = () => {
     // Remove spinner
     const spinner = infoWrapper.querySelector('#loading-spinner');
+    infoWrapper.classList.remove('bg-black', customShadow);
     spinner.remove();
 }
 
@@ -53,7 +55,7 @@ const displaySongInfo = async (hitData) => {
     const songInfoAndImageWrapper = document.createElement('div');
     songInfoAndImageWrapper.classList.add('md:h-fit', 'md:w-[256px]','rounded-lg', 'overflow-clip');
     const lyricsWrapper = document.createElement('div');
-    lyricsWrapper.classList.add('text-center', 'md:text-left', 'md:overflow-y-auto', 'flex-1');
+    lyricsWrapper.classList.add('text-center', 'md:text-left', 'md:overflow-y-auto', 'hidden-scrollbar','flex-1');
     lyricsWrapper.innerText = lyrics;
     const songImg = document.createElement('img');
     songImg.classList.add('rounded-lg', 'max-h-[256px]', 'm-auto');
@@ -99,7 +101,7 @@ const returnHitData = (hit) => {
 
 const createNewSearchResult = (hitData) => {
     const newItem = document.createElement('div');
-    newItem.classList.add('rounded-2xl', 'relative', 'bg-opacity-30', 'shadow-[0_2px_15px_rgba(0,0,0,0.5)]', 'backdrop-blur-xl', 'hover:bg-opacity-60', 'overflow-clip', 'transition-all', 'min-w-[256px]', 'h-[256px]');
+    newItem.classList.add('rounded-2xl', 'relative', 'bg-opacity-30', customShadow, 'backdrop-blur-xl', 'hover:bg-opacity-60', 'overflow-clip', 'transition-all', 'min-w-[256px]', 'h-[256px]');
     const itemThumbnail = document.createElement('img');
     itemThumbnail.classList.add('w-full', 'hover:scale-125', 'transition-all');
     itemThumbnail.setAttribute('src', hitData.songImageUrl);

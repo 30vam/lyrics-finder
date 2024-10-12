@@ -592,29 +592,31 @@ var _getSongData = require("./requestModules/getSongData");
 var _getSongDataDefault = parcelHelpers.interopDefault(_getSongData);
 var _getLyrics = require("./requestModules/getLyrics");
 var _getLyricsDefault = parcelHelpers.interopDefault(_getLyrics);
-var _magnify1X10S200Px200PxSvg = require("./img/Magnify@1x-1.0s-200px-200px.svg");
-var _magnify1X10S200Px200PxSvgDefault = parcelHelpers.interopDefault(_magnify1X10S200Px200PxSvg);
+var _doubleRing1X10S200Px200PxSvg = require("./img/Double Ring@1x-1.0s-200px-200px.svg");
+var _doubleRing1X10S200Px200PxSvgDefault = parcelHelpers.interopDefault(_doubleRing1X10S200Px200PxSvg);
 // Elements
 const searchForm = document.querySelector("#search-form");
 const searchQueryInput = searchForm.querySelector("#search-query-input");
 const infoWrapper = document.querySelector("#info-wrapper");
 // Variables
 const accessToken = "NgGLPuC2u63a8o4y1WDu4UNimeMEhPa8oRAl-ekIX37slfle5AUKzEV0oK0ZZo7F";
+const customShadow = "shadow-[0_2px_15px_rgba(0,0,0,0.5)]";
 // Functions
 const showSpinner = ()=>{
     infoWrapper.replaceChildren();
     // Add spinner and center it
     const spinner = document.createElement("img");
-    spinner.setAttribute("src", (0, _magnify1X10S200Px200PxSvgDefault.default));
+    spinner.setAttribute("src", (0, _doubleRing1X10S200Px200PxSvgDefault.default));
     spinner.setAttribute("alt", "Loading info...");
     spinner.id = "loading-spinner";
     spinner.classList.add("absolute", "w-24", "h-24", "top-1/2", "left-1/2", "translate-x-[-50%]");
-    infoWrapper.add;
+    infoWrapper.classList.add("bg-black", customShadow);
     infoWrapper.append(spinner);
 };
 const removeSpinner = ()=>{
     // Remove spinner
     const spinner = infoWrapper.querySelector("#loading-spinner");
+    infoWrapper.classList.remove("bg-black", customShadow);
     spinner.remove();
 };
 const correctifySongName = (songName)=>{
@@ -633,7 +635,7 @@ const displaySongInfo = async (hitData)=>{
     const songInfoAndImageWrapper = document.createElement("div");
     songInfoAndImageWrapper.classList.add("md:h-fit", "md:w-[256px]", "rounded-lg", "overflow-clip");
     const lyricsWrapper = document.createElement("div");
-    lyricsWrapper.classList.add("text-center", "md:text-left", "md:overflow-y-auto", "flex-1");
+    lyricsWrapper.classList.add("text-center", "md:text-left", "md:overflow-y-auto", "hidden-scrollbar", "flex-1");
     lyricsWrapper.innerText = lyrics;
     const songImg = document.createElement("img");
     songImg.classList.add("rounded-lg", "max-h-[256px]", "m-auto");
@@ -672,7 +674,7 @@ const returnHitData = (hit)=>{
 };
 const createNewSearchResult = (hitData)=>{
     const newItem = document.createElement("div");
-    newItem.classList.add("rounded-2xl", "relative", "bg-opacity-30", "shadow-[0_2px_15px_rgba(0,0,0,0.5)]", "backdrop-blur-xl", "hover:bg-opacity-60", "overflow-clip", "transition-all", "min-w-[256px]", "h-[256px]");
+    newItem.classList.add("rounded-2xl", "relative", "bg-opacity-30", customShadow, "backdrop-blur-xl", "hover:bg-opacity-60", "overflow-clip", "transition-all", "min-w-[256px]", "h-[256px]");
     const itemThumbnail = document.createElement("img");
     itemThumbnail.classList.add("w-full", "hover:scale-125", "transition-all");
     itemThumbnail.setAttribute("src", hitData.songImageUrl);
@@ -714,7 +716,7 @@ const handleSearchRequest = async (event)=>{
 // Events
 searchForm.addEventListener("submit", (e)=>handleSearchRequest(e));
 
-},{"./requestModules/searchSongs":"jBUqz","./requestModules/getSongData":"8icSn","./requestModules/getLyrics":"52zQ6","./img/Magnify@1x-1.0s-200px-200px.svg":"cZMYR","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jBUqz":[function(require,module,exports) {
+},{"./requestModules/searchSongs":"jBUqz","./requestModules/getSongData":"8icSn","./requestModules/getLyrics":"52zQ6","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./img/Double Ring@1x-1.0s-200px-200px.svg":"8RynB"}],"jBUqz":[function(require,module,exports) {
 const searchEndpoint = "https://api.genius.com/search?q=";
 module.exports = async (searchQuery, accessToken)=>{
     const requestUrl = `${searchEndpoint}${encodeURIComponent(searchQuery)}&access_token=${accessToken}`;
@@ -765,10 +767,40 @@ module.exports = async (songTitle)=>{
     }
 };
 
-},{}],"cZMYR":[function(require,module,exports) {
-module.exports = require("9099022c2fcfa33").getBundleURL("bLxZJ") + "Magnify@1x-1.0s-200px-200px.9380ff54.svg" + "?" + Date.now();
+},{}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || Object.prototype.hasOwnProperty.call(dest, key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
 
-},{"9099022c2fcfa33":"lgJ39"}],"lgJ39":[function(require,module,exports) {
+},{}],"8RynB":[function(require,module,exports) {
+module.exports = require("530e74bb2c5f399e").getBundleURL("bLxZJ") + "Double Ring@1x-1.0s-200px-200px.23e782df.svg" + "?" + Date.now();
+
+},{"530e74bb2c5f399e":"lgJ39"}],"lgJ39":[function(require,module,exports) {
 "use strict";
 var bundleURL = {};
 function getBundleURLCached(id) {
@@ -802,36 +834,6 @@ function getOrigin(url) {
 exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
 exports.getOrigin = getOrigin;
-
-},{}],"gkKU3":[function(require,module,exports) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, "__esModule", {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === "default" || key === "__esModule" || Object.prototype.hasOwnProperty.call(dest, key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
 
 },{}]},["farZc","8lqZg"], "8lqZg", "parcelRequire981d")
 
