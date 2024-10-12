@@ -99,7 +99,7 @@ const returnHitData = (hit) => {
 
 const createNewSearchResult = (hitData) => {
     const newItem = document.createElement('div');
-    newItem.classList.add('rounded-2xl', 'relative', 'bg-opacity-30', 'backdrop-blur-xl', 'hover:bg-opacity-60', 'overflow-clip', 'transition-all', 'min-w-[256px]', 'h-[256px]');
+    newItem.classList.add('rounded-2xl', 'relative', 'bg-opacity-30', 'shadow-[0_2px_15px_rgba(0,0,0,0.5)]', 'backdrop-blur-xl', 'hover:bg-opacity-60', 'overflow-clip', 'transition-all', 'min-w-[256px]', 'h-[256px]');
     const itemThumbnail = document.createElement('img');
     itemThumbnail.classList.add('w-full', 'hover:scale-125', 'transition-all');
     itemThumbnail.setAttribute('src', hitData.songImageUrl);
