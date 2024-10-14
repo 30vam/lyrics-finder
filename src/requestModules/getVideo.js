@@ -7,7 +7,7 @@ module.exports = async (searchQuery, maxResult, accessToken) => {
         const response = await fetch(requestUrl);
 
         if (!response.ok) 
-            throw new Error(`Error when trying to find youtube video: ${response.status}`);
+            throw new Error(`Code ${response.status}`);
         
         const data = await response.json();
         

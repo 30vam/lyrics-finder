@@ -650,15 +650,26 @@ const createSongInfoDiv = (wrapper, hitData, songData)=>{
     wrapper.append(songInfo);
 };
 const createSongLyricsAndVideo = (wrapper, lyrics, songVideoData)=>{
-    const videoId = songVideoData.items[0].id.videoId;
-    const video = document.createElement("iframe");
-    video.setAttribute("src", `https://www.youtube.com/embed/${videoId}`);
-    video.setAttribute("allowfullscreen", true);
-    video.classList.add("w-full", "mb-4", "rounded-t-lg", "aspect-video");
+    // Only load the video if it exists
+    const videoWrapper = document.createElement("div");
+    videoWrapper.classList.add("w-full", "mb-4", "rounded-t-lg", "aspect-video", "flex", "justify-center", "items-center");
+    if (songVideoData.items) {
+        const videoId = songVideoData.items[0].id.videoId;
+        const video = document.createElement("iframe");
+        video.setAttribute("src", `https://www.youtube.com/embed/${videoId}`);
+        video.setAttribute("allowfullscreen", true);
+        video.classList.add("w-full");
+        videoWrapper.append(video);
+    } else {
+        const videoPlaceHolder = document.createElement("div");
+        videoPlaceHolder.classList.add("px-3");
+        videoPlaceHolder.innerText = `Video currently not available - ${songVideoData}`;
+        videoWrapper.append(videoPlaceHolder);
+    }
     const lyricsWrapper = document.createElement("p");
     lyricsWrapper.classList.add("text-center", "p-2");
     lyricsWrapper.innerText = lyrics;
-    wrapper.append(video, lyricsWrapper);
+    wrapper.append(videoWrapper, lyricsWrapper);
 };
 const displaySongWrapper = async (hitData)=>{
     // Send the needed get requests first
@@ -804,7 +815,7 @@ module.exports = async (searchQuery, maxResult, accessToken)=>{
     const requestUrl = `${youtubeSearchEndpoint}?part=snippet&q=${encodeURIComponent(searchQuery)}&maxResults=${maxResult}&key=${accessToken}`;
     try {
         const response = await fetch(requestUrl);
-        if (!response.ok) throw new Error(`Error when trying to find youtube video: ${response.status}`);
+        if (!response.ok) throw new Error(`Code ${response.status}`);
         const data = await response.json();
         console.log(`Video search result for '${searchQuery}':`);
         console.log(data);
