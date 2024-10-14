@@ -10,7 +10,7 @@ module.exports = async (searchQuery, maxResult, accessToken) => {
             throw new Error(`Error when trying to find youtube video: ${response.status}`);
         
         const data = await response.json();
-
+        
         console.log(`Video search result for '${searchQuery}':`);
         console.log(data);
         return data;

@@ -89,10 +89,10 @@ const createSongLyricsAndVideo = (wrapper, lyrics, songVideoData) => {
 
 const displaySongWrapper = async (hitData) => {
     // Send the needed get requests first
+    const songNameForLyricsApi = `${ hitData.artistName } - ${ correctifySongName(hitData.title) }`;
     showSpinner();
-    const songNameForLyricsApi = `${ hitData.artistName }-${ correctifySongName(hitData.title) }`;
     const songData = await getSongData(hitData.id, geniusAccessToken);
-    const songVideoData = await getVideo(hitData.title, 1, youtubeAccessToken);
+    const songVideoData = await getVideo(`${ hitData.artistName } - ${ hitData.title }`, 1, youtubeAccessToken);
     const lyrics = await getLyrics(songNameForLyricsApi);
     removeSpinner();
 
