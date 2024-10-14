@@ -93,7 +93,7 @@ const displaySongWrapper = async (hitData) => {
     const songNameForLyricsApi = `${ hitData.artistName } - ${ correctifySongName(hitData.title) }`;
     showSpinner();
     const songData = await getSongData(hitData.id, geniusAccessToken);
-    const songVideoData = await getVideo(`${ hitData.artistName } - ${ hitData.title }`, 1, youtubeAccessToken);
+    const songVideoData = await getVideo(`${ hitData.artistName } - ${ hitData.title } with lyrics`, 1, youtubeAccessToken);
     const lyrics = await getLyrics(songNameForLyricsApi);
     removeSpinner();
 
