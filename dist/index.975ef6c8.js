@@ -632,7 +632,7 @@ const createSongInfoDiv = (wrapper, hitData, songData)=>{
     songImg.classList.add("rounded-lg", "max-h-[256px]", "m-auto", customShadow);
     songImg.setAttribute("src", hitData.songImageUrl);
     const songInfo = document.createElement("ul");
-    songInfo.classList.add("text-center", "flex", "flex-col", "justify-evenly", "gap-3", "mt-2", "bg-black", "bg-opacity-35", customShadow, "rounded-xl", "p-4", "mt-4", "backdrop-blur-sm", "md:flex-grow");
+    songInfo.classList.add("text-center", "flex", "w-full", "flex-col", "justify-evenly", "gap-3", "mt-2", "bg-black", "bg-opacity-35", customShadow, "rounded-xl", "p-4", "mt-4", "backdrop-blur-sm", "md:flex-grow");
     const songTitle = document.createElement("li");
     songTitle.classList.add("font-bold", "md:text-3xl", "text-2xl");
     songTitle.innerText = `${correctifySongName(hitData.title)}`;
@@ -654,8 +654,9 @@ const createSongLyricsAndVideo = (wrapper, lyrics, songVideoData)=>{
     const video = document.createElement("iframe");
     video.setAttribute("src", `https://www.youtube.com/embed/${videoId}`);
     video.setAttribute("allowfullscreen", true);
-    video.classList.add("w-full", "my-4", "rounded-lg");
+    video.classList.add("w-full", "mb-4", "rounded-t-lg", "aspect-video");
     const lyricsWrapper = document.createElement("p");
+    lyricsWrapper.classList.add("text-center", "p-2");
     lyricsWrapper.innerText = lyrics;
     wrapper.append(video, lyricsWrapper);
 };
@@ -669,9 +670,9 @@ const displaySongWrapper = async (hitData)=>{
     removeSpinner();
     // Create the necessary divs for displaying and fill them with the recieved data
     const songInfoAndImageWrapper = document.createElement("div");
-    songInfoAndImageWrapper.classList.add("md:h-full", "md:w-[256px]", "rounded-xl", "text-lg", "flex", "flex-col", "md-semibold");
+    songInfoAndImageWrapper.classList.add("md:h-full", "md:w-[256px]", "rounded-xl", "text-lg", "flex", "flex-col", "items-center", "md-semibold");
     const lyricsWrapper = document.createElement("div");
-    lyricsWrapper.classList.add("text-center", "md:text-left", "md:overflow-y-auto", "text-lg", "lg:text-xl", "hidden-scrollbar", "flex-1", "bg-black", "bg-opacity-35", customShadow, "rounded-xl", "p-4", "backdrop-blur-sm");
+    lyricsWrapper.classList.add("md:text-left", "md:overflow-y-auto", "text-sm", "md:text-lg", "w-full", "lg:w-1/2", "hidden-scrollbar", "bg-black", "bg-opacity-35", customShadow, "rounded-xl", "backdrop-blur-sm");
     createSongInfoDiv(songInfoAndImageWrapper, hitData, songData);
     createSongLyricsAndVideo(lyricsWrapper, lyrics, songVideoData);
     // Change grid properties when showing song info
