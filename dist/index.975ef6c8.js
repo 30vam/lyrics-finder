@@ -649,9 +649,15 @@ const createSongInfoDiv = (wrapper, hitData, songData)=>{
     wrapper.append(songImg);
     wrapper.append(songInfo);
 };
-const createSongLyricsDiv = (wrapper, lyrics)=>{
-    wrapper.classList.add("text-center", "md:text-left", "md:overflow-y-auto", "text-lg", "lg:text-xl", "hidden-scrollbar", "flex-1", "bg-black", "bg-opacity-35", customShadow, "rounded-xl", "p-4", "backdrop-blur-sm");
-    wrapper.innerText = lyrics;
+const createSongLyricsAndVideo = (wrapper, lyrics, songVideoData)=>{
+    const videoId = songVideoData.items[0].id.videoId;
+    const video = document.createElement("iframe");
+    video.setAttribute("src", `https://www.youtube.com/embed/${videoId}`);
+    video.setAttribute("allowfullscreen", true);
+    video.classList.add("w-full", "my-4", "rounded-lg");
+    const lyricsWrapper = document.createElement("p");
+    lyricsWrapper.innerText = lyrics;
+    wrapper.append(video, lyricsWrapper);
 };
 const displaySongWrapper = async (hitData)=>{
     // Send the needed get requests first
@@ -665,8 +671,9 @@ const displaySongWrapper = async (hitData)=>{
     const songInfoAndImageWrapper = document.createElement("div");
     songInfoAndImageWrapper.classList.add("md:h-full", "md:w-[256px]", "rounded-xl", "text-lg", "flex", "flex-col", "md-semibold");
     const lyricsWrapper = document.createElement("div");
+    lyricsWrapper.classList.add("text-center", "md:text-left", "md:overflow-y-auto", "text-lg", "lg:text-xl", "hidden-scrollbar", "flex-1", "bg-black", "bg-opacity-35", customShadow, "rounded-xl", "p-4", "backdrop-blur-sm");
     createSongInfoDiv(songInfoAndImageWrapper, hitData, songData);
-    createSongLyricsDiv(lyricsWrapper, lyrics, songVideoData);
+    createSongLyricsAndVideo(lyricsWrapper, lyrics, songVideoData);
     // Change grid properties when showing song info
     infoWrapper.classList.remove("search-result-grid");
     infoWrapper.classList.add("song-info-flexbox");
