@@ -176,7 +176,19 @@ const handleSearchRequest = async (event) => {
     showSpinner();
     const searchQuery = searchQueryInput.value;
     const searchResults = await searchSongs(searchQuery, geniusAccessToken); // We need to use await here, otherwise it will return the async FUNCTION instead of data, async functions ALWAYS return promise without waiting, so we need to use await
-    removeSpinner();
+
+    // Show a text if results were empty
+    if (searchResults.response.hits.length === 0) {
+        const errorText = document.createElement('div');
+        errorText.classList.add('text-lg', 'md:text-2xl', 'self-center', 'px-4', 'text-center', 'col-span-full');
+        errorText.innerText = `No results were found for '${searchQuery}'.`;
+        infoWrapper.innerText = '';  // Removes the spinner
+        infoWrapper.append(errorText);
+    }
+        
+    else
+        removeSpinner();
+    
     displaySearchResults(searchResults);
 }
 

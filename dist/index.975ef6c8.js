@@ -731,13 +731,20 @@ const handleSearchRequest = async (event)=>{
     showSpinner();
     const searchQuery = searchQueryInput.value;
     const searchResults = await (0, _searchSongsDefault.default)(searchQuery, geniusAccessToken); // We need to use await here, otherwise it will return the async FUNCTION instead of data, async functions ALWAYS return promise without waiting, so we need to use await
-    removeSpinner();
+    // Show a text if results were empty
+    if (searchResults.response.hits.length === 0) {
+        const errorText = document.createElement("div");
+        errorText.classList.add("text-lg", "md:text-2xl", "self-center", "px-4", "text-center", "col-span-full");
+        errorText.innerText = `No results were found for '${searchQuery}'.`;
+        infoWrapper.innerText = ""; // Removes the spinner
+        infoWrapper.append(errorText);
+    } else removeSpinner();
     displaySearchResults(searchResults);
 };
 // Events
 searchForm.addEventListener("submit", (e)=>handleSearchRequest(e));
 
-},{"./requestModules/searchSongs":"jBUqz","./requestModules/getSongData":"8icSn","./requestModules/getLyrics":"52zQ6","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./img/Double Ring@1x-1.0s-200px-200px.svg":"8RynB","./requestModules/getVideo":"8k0v8"}],"jBUqz":[function(require,module,exports) {
+},{"./requestModules/searchSongs":"jBUqz","./requestModules/getSongData":"8icSn","./requestModules/getLyrics":"52zQ6","./requestModules/getVideo":"8k0v8","./img/Double Ring@1x-1.0s-200px-200px.svg":"8RynB","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jBUqz":[function(require,module,exports) {
 const searchEndpoint = "https://api.genius.com/search?q=";
 module.exports = async (searchQuery, accessToken)=>{
     const requestUrl = `${searchEndpoint}${encodeURIComponent(searchQuery)}&access_token=${accessToken}`;
@@ -791,34 +798,21 @@ module.exports = async (songTitle)=>{
     }
 };
 
-},{}],"gkKU3":[function(require,module,exports) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, "__esModule", {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === "default" || key === "__esModule" || Object.prototype.hasOwnProperty.call(dest, key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
+},{}],"8k0v8":[function(require,module,exports) {
+const youtubeSearchEndpoint = "https://www.googleapis.com/youtube/v3/search";
+module.exports = async (searchQuery, maxResult, accessToken)=>{
+    const requestUrl = `${youtubeSearchEndpoint}?part=snippet&q=${encodeURIComponent(searchQuery)}&maxResults=${maxResult}&key=${accessToken}`;
+    try {
+        const response = await fetch(requestUrl);
+        if (!response.ok) throw new Error(`Error when trying to find youtube video: ${response.status}`);
+        const data = await response.json();
+        console.log(`Video search result for '${searchQuery}':`);
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
 };
 
 },{}],"8RynB":[function(require,module,exports) {
@@ -859,21 +853,34 @@ exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
 exports.getOrigin = getOrigin;
 
-},{}],"8k0v8":[function(require,module,exports) {
-const youtubeSearchEndpoint = "https://www.googleapis.com/youtube/v3/search";
-module.exports = async (searchQuery, maxResult, accessToken)=>{
-    const requestUrl = `${youtubeSearchEndpoint}?part=snippet&q=${encodeURIComponent(searchQuery)}&maxResults=${maxResult}&key=${accessToken}`;
-    try {
-        const response = await fetch(requestUrl);
-        if (!response.ok) throw new Error(`Error when trying to find youtube video: ${response.status}`);
-        const data = await response.json();
-        console.log(`Video search result for '${searchQuery}':`);
-        console.log(data);
-        return data;
-    } catch (error) {
-        console.log(error);
-        return error;
-    }
+},{}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || Object.prototype.hasOwnProperty.call(dest, key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
 };
 
 },{}]},["farZc","8lqZg"], "8lqZg", "parcelRequire981d")
