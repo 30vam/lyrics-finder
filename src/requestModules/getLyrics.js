@@ -16,6 +16,7 @@ module.exports = async (songTitle) => {
         else
             result = 'Sorry, no lyrics available for this song.';
 
+        console.log(`Lyrics for ${songTitle}:`)
         console.log(result);
         return result;
     } 

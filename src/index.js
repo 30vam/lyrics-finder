@@ -2,6 +2,7 @@
 import searchSongs from './requestModules/searchSongs';
 import getSongData from './requestModules/getSongData';
 import getLyrics from './requestModules/getLyrics';
+import getVideo from './requestModules/getVideo';
 import spinnerImgPath from './img/Double Ring@1x-1.0s-200px-200px.svg'
 
 // Elements
@@ -10,11 +11,13 @@ const searchQueryInput = searchForm.querySelector('#search-query-input');
 const infoWrapper = document.querySelector('#info-wrapper');
 
 // Variables
-const accessToken = 'NgGLPuC2u63a8o4y1WDu4UNimeMEhPa8oRAl-ekIX37slfle5AUKzEV0oK0ZZo7F';
+const geniusAccessToken = 'NgGLPuC2u63a8o4y1WDu4UNimeMEhPa8oRAl-ekIX37slfle5AUKzEV0oK0ZZo7F';
+const youtubeAccessToken = 'AIzaSyAY0C1HEvG3MwyIXMpGnws236APRKF4UAg';
 const customShadow = 'shadow-[0_2px_15px_rgba(0,0,0,0.5)]'
 
 // Functions
 const showSpinner = () => {
+    // Empty the wrapper first
     infoWrapper.replaceChildren();
 
     // Add spinner and center it
@@ -40,47 +43,57 @@ const correctifySongName = (songName) => {
     return parts[0]; // Return the part before the split
 }
 
-const displaySongInfo = async (hitData) => {
-
-    showSpinner();
-    const songNameForLyricsApi = `${ hitData.artistName }-${ correctifySongName(hitData.title) }`;
-    const songData = await getSongData(hitData.id, accessToken);
-    const lyrics = await getLyrics(songNameForLyricsApi);
-    removeSpinner();
-
-    // Change grid properties when showing song info
-    infoWrapper.classList.remove('search-result-grid');
-    infoWrapper.classList.add('song-info-flexbox');
-
-    const songInfoAndImageWrapper = document.createElement('div');
-    songInfoAndImageWrapper.classList.add('md:h-full', 'md:w-[256px]','rounded-xl', 'text-lg', 'flex', 'flex-col', 'md-semibold');
-    const lyricsWrapper = document.createElement('div');
-    lyricsWrapper.classList.add('text-center', 'md:text-left', 'md:overflow-y-auto', 'text-lg', 'lg:text-xl','hidden-scrollbar', 'flex-1', 'bg-black', 'bg-opacity-35', customShadow, 'rounded-xl', 'p-4', 'backdrop-blur-sm');
-    lyricsWrapper.innerText = lyrics;
+const createSongInfoDiv = (wrapper, hitData, songData) => {
     const songImg = document.createElement('img');
     songImg.classList.add('rounded-lg', 'max-h-[256px]', 'm-auto', customShadow);
     songImg.setAttribute('src', hitData.songImageUrl);
     const songInfo = document.createElement('ul');
     songInfo.classList.add('text-center', 'flex', 'flex-col', 'justify-evenly','gap-3', 'mt-2', 'bg-black', 'bg-opacity-35', customShadow, 'rounded-xl', 'p-4', 'mt-4', 'backdrop-blur-sm', 'md:flex-grow');
     const songTitle = document.createElement('li');
-    songTitle.classList.add('font-bold', 'md:text-4xl', 'text-2xl');
-    songTitle.innerText = `${ hitData.title }`;
+    songTitle.classList.add('font-bold', 'md:text-3xl', 'text-2xl');
+    songTitle.innerText = `${ correctifySongName(hitData.title) }`;
     const artistName = document.createElement('li');
     artistName.classList.add('md:text-2xl', 'md:font-bold', 'font-semibold', 'text-xl');
     artistName.innerText = `${ hitData.artistName }`;
     const releaseDate = document.createElement('li');
     releaseDate.innerText = `${ hitData.releaseDate }`;
 
-    // Show album name if it exists
+    // Show album name only if it exists
     let songAlbum = document.createElement('li');
     if (songData.response.song.album)
         songAlbum.innerText = `${ songData.response.song.album.name }`;
     else
         songAlbum.innerText = 'No album.';
-    
+
     songInfo.append(songTitle, artistName, releaseDate, songAlbum);
-    songInfoAndImageWrapper.append(songImg);
-    songInfoAndImageWrapper.append(songInfo);
+    wrapper.append(songImg);
+    wrapper.append(songInfo);
+}
+
+const createSongLyricsDiv = (wrapper, lyrics) => {
+    wrapper.classList.add('text-center', 'md:text-left', 'md:overflow-y-auto', 'text-lg', 'lg:text-xl','hidden-scrollbar', 'flex-1', 'bg-black', 'bg-opacity-35', customShadow, 'rounded-xl', 'p-4', 'backdrop-blur-sm');
+    wrapper.innerText = lyrics;
+}
+
+const displaySongWrapper = async (hitData) => {
+    // Send the needed get requests first
+    showSpinner();
+    const songNameForLyricsApi = `${ hitData.artistName }-${ correctifySongName(hitData.title) }`;
+    const songData = await getSongData(hitData.id, geniusAccessToken);
+    const songVideoData = await getVideo(hitData.title, 1, youtubeAccessToken);
+    const lyrics = await getLyrics(songNameForLyricsApi);
+    removeSpinner();
+
+    // Create the necessary divs for displaying and fill them with the recieved data
+    const songInfoAndImageWrapper = document.createElement('div');
+    songInfoAndImageWrapper.classList.add('md:h-full', 'md:w-[256px]','rounded-xl', 'text-lg', 'flex', 'flex-col', 'md-semibold');
+    const lyricsWrapper = document.createElement('div');
+    createSongInfoDiv(songInfoAndImageWrapper, hitData, songData);
+    createSongLyricsDiv(lyricsWrapper, lyrics, songVideoData)
+    
+    // Change grid properties when showing song info
+    infoWrapper.classList.remove('search-result-grid');
+    infoWrapper.classList.add('song-info-flexbox');
     infoWrapper.append(songInfoAndImageWrapper, lyricsWrapper);
 }
 
@@ -114,7 +127,7 @@ const createNewSearchResult = (hitData) => {
     songTitle.innerText = hitData.title;
 
     // Event Listeners
-    songInfo.addEventListener('click', () => displaySongInfo(hitData));
+    songInfo.addEventListener('click', () => displaySongWrapper(hitData));
 
     // Append elements to wrappers
     songInfo.prepend(songTitle);
@@ -126,9 +139,8 @@ const createNewSearchResult = (hitData) => {
 
 const displaySearchResults = (searchResults) => {
     const hits = searchResults.response.hits;
-    console.log(searchResults.response.hits);
     
-    // Change grid properties when showing song info
+    // Change grid properties when showing song info (different layout)
     infoWrapper.classList.remove('song-info-flexbox');
     infoWrapper.classList.add('search-result-grid');
 
@@ -146,7 +158,7 @@ const handleSearchRequest = async (event) => {
 
     showSpinner();
     const searchQuery = searchQueryInput.value;
-    const searchResults = await searchSongs(searchQuery, accessToken); // We need to use await here, otherwise it will return the async FUNCTION instead of data, async functions ALWAYS return promise without waiting, so we need to use await
+    const searchResults = await searchSongs(searchQuery, geniusAccessToken); // We need to use await here, otherwise it will return the async FUNCTION instead of data, async functions ALWAYS return promise without waiting, so we need to use await
     removeSpinner();
     displaySearchResults(searchResults);
 }

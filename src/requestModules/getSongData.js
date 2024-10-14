@@ -5,15 +5,17 @@ module.exports = async (songId, accessToken) => {
 
     try {
         const response = await fetch(requestUrl);
-        console.log(response);
         if (!response.ok)
-            throw new Error(`Error trying to get song data - status code : ${response.status}`);
+            throw new Error(`Error trying to get song data - status code: ${response.status}`);
 
         const data = await response.json();
+
+        console.log(`Song data for '${songId}':`);
         console.log(data);
         return data;
     } 
     catch (error) {
-        console.log('Error trying to fetch song data API: ', error);
+        console.log(error);
+        return error;
     }
 }

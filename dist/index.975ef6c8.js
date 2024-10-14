@@ -592,6 +592,8 @@ var _getSongData = require("./requestModules/getSongData");
 var _getSongDataDefault = parcelHelpers.interopDefault(_getSongData);
 var _getLyrics = require("./requestModules/getLyrics");
 var _getLyricsDefault = parcelHelpers.interopDefault(_getLyrics);
+var _getVideo = require("./requestModules/getVideo");
+var _getVideoDefault = parcelHelpers.interopDefault(_getVideo);
 var _doubleRing1X10S200Px200PxSvg = require("./img/Double Ring@1x-1.0s-200px-200px.svg");
 var _doubleRing1X10S200Px200PxSvgDefault = parcelHelpers.interopDefault(_doubleRing1X10S200Px200PxSvg);
 // Elements
@@ -599,10 +601,12 @@ const searchForm = document.querySelector("#search-form");
 const searchQueryInput = searchForm.querySelector("#search-query-input");
 const infoWrapper = document.querySelector("#info-wrapper");
 // Variables
-const accessToken = "NgGLPuC2u63a8o4y1WDu4UNimeMEhPa8oRAl-ekIX37slfle5AUKzEV0oK0ZZo7F";
+const geniusAccessToken = "NgGLPuC2u63a8o4y1WDu4UNimeMEhPa8oRAl-ekIX37slfle5AUKzEV0oK0ZZo7F";
+const youtubeAccessToken = "AIzaSyAY0C1HEvG3MwyIXMpGnws236APRKF4UAg";
 const customShadow = "shadow-[0_2px_15px_rgba(0,0,0,0.5)]";
 // Functions
 const showSpinner = ()=>{
+    // Empty the wrapper first
     infoWrapper.replaceChildren();
     // Add spinner and center it
     const spinner = document.createElement("img");
@@ -623,40 +627,49 @@ const correctifySongName = (songName)=>{
     const parts = songName.split(/[\[\(]/); // Split at `[` or `(`
     return parts[0]; // Return the part before the split
 };
-const displaySongInfo = async (hitData)=>{
-    showSpinner();
-    const songNameForLyricsApi = `${hitData.artistName}-${correctifySongName(hitData.title)}`;
-    const songData = await (0, _getSongDataDefault.default)(hitData.id, accessToken);
-    const lyrics = await (0, _getLyricsDefault.default)(songNameForLyricsApi);
-    removeSpinner();
-    // Change grid properties when showing song info
-    infoWrapper.classList.remove("search-result-grid");
-    infoWrapper.classList.add("song-info-flexbox");
-    const songInfoAndImageWrapper = document.createElement("div");
-    songInfoAndImageWrapper.classList.add("md:h-full", "md:w-[256px]", "rounded-xl", "text-lg", "flex", "flex-col", "md-semibold");
-    const lyricsWrapper = document.createElement("div");
-    lyricsWrapper.classList.add("text-center", "md:text-left", "md:overflow-y-auto", "text-lg", "lg:text-xl", "hidden-scrollbar", "flex-1", "bg-black", "bg-opacity-35", customShadow, "rounded-xl", "p-4", "backdrop-blur-sm");
-    lyricsWrapper.innerText = lyrics;
+const createSongInfoDiv = (wrapper, hitData, songData)=>{
     const songImg = document.createElement("img");
     songImg.classList.add("rounded-lg", "max-h-[256px]", "m-auto", customShadow);
     songImg.setAttribute("src", hitData.songImageUrl);
     const songInfo = document.createElement("ul");
     songInfo.classList.add("text-center", "flex", "flex-col", "justify-evenly", "gap-3", "mt-2", "bg-black", "bg-opacity-35", customShadow, "rounded-xl", "p-4", "mt-4", "backdrop-blur-sm", "md:flex-grow");
     const songTitle = document.createElement("li");
-    songTitle.classList.add("font-bold", "md:text-4xl", "text-2xl");
-    songTitle.innerText = `${hitData.title}`;
+    songTitle.classList.add("font-bold", "md:text-3xl", "text-2xl");
+    songTitle.innerText = `${correctifySongName(hitData.title)}`;
     const artistName = document.createElement("li");
     artistName.classList.add("md:text-2xl", "md:font-bold", "font-semibold", "text-xl");
     artistName.innerText = `${hitData.artistName}`;
     const releaseDate = document.createElement("li");
     releaseDate.innerText = `${hitData.releaseDate}`;
-    // Show album name if it exists
+    // Show album name only if it exists
     let songAlbum = document.createElement("li");
     if (songData.response.song.album) songAlbum.innerText = `${songData.response.song.album.name}`;
     else songAlbum.innerText = "No album.";
     songInfo.append(songTitle, artistName, releaseDate, songAlbum);
-    songInfoAndImageWrapper.append(songImg);
-    songInfoAndImageWrapper.append(songInfo);
+    wrapper.append(songImg);
+    wrapper.append(songInfo);
+};
+const createSongLyricsDiv = (wrapper, lyrics)=>{
+    wrapper.classList.add("text-center", "md:text-left", "md:overflow-y-auto", "text-lg", "lg:text-xl", "hidden-scrollbar", "flex-1", "bg-black", "bg-opacity-35", customShadow, "rounded-xl", "p-4", "backdrop-blur-sm");
+    wrapper.innerText = lyrics;
+};
+const displaySongWrapper = async (hitData)=>{
+    // Send the needed get requests first
+    showSpinner();
+    const songNameForLyricsApi = `${hitData.artistName}-${correctifySongName(hitData.title)}`;
+    const songData = await (0, _getSongDataDefault.default)(hitData.id, geniusAccessToken);
+    const songVideoData = await (0, _getVideoDefault.default)(hitData.title, 1, youtubeAccessToken);
+    const lyrics = await (0, _getLyricsDefault.default)(songNameForLyricsApi);
+    removeSpinner();
+    // Create the necessary divs for displaying and fill them with the recieved data
+    const songInfoAndImageWrapper = document.createElement("div");
+    songInfoAndImageWrapper.classList.add("md:h-full", "md:w-[256px]", "rounded-xl", "text-lg", "flex", "flex-col", "md-semibold");
+    const lyricsWrapper = document.createElement("div");
+    createSongInfoDiv(songInfoAndImageWrapper, hitData, songData);
+    createSongLyricsDiv(lyricsWrapper, lyrics, songVideoData);
+    // Change grid properties when showing song info
+    infoWrapper.classList.remove("search-result-grid");
+    infoWrapper.classList.add("song-info-flexbox");
     infoWrapper.append(songInfoAndImageWrapper, lyricsWrapper);
 };
 const returnHitData = (hit)=>{
@@ -686,7 +699,7 @@ const createNewSearchResult = (hitData)=>{
     songTitle.classList.add("font-bold", "text-xl", "mb-2");
     songTitle.innerText = hitData.title;
     // Event Listeners
-    songInfo.addEventListener("click", ()=>displaySongInfo(hitData));
+    songInfo.addEventListener("click", ()=>displaySongWrapper(hitData));
     // Append elements to wrappers
     songInfo.prepend(songTitle);
     newItem.append(itemThumbnail);
@@ -695,8 +708,7 @@ const createNewSearchResult = (hitData)=>{
 };
 const displaySearchResults = (searchResults)=>{
     const hits = searchResults.response.hits;
-    console.log(searchResults.response.hits);
-    // Change grid properties when showing song info
+    // Change grid properties when showing song info (different layout)
     infoWrapper.classList.remove("song-info-flexbox");
     infoWrapper.classList.add("search-result-grid");
     for (const hit of hits){
@@ -710,26 +722,27 @@ const handleSearchRequest = async (event)=>{
     event.preventDefault();
     showSpinner();
     const searchQuery = searchQueryInput.value;
-    const searchResults = await (0, _searchSongsDefault.default)(searchQuery, accessToken); // We need to use await here, otherwise it will return the async FUNCTION instead of data, async functions ALWAYS return promise without waiting, so we need to use await
+    const searchResults = await (0, _searchSongsDefault.default)(searchQuery, geniusAccessToken); // We need to use await here, otherwise it will return the async FUNCTION instead of data, async functions ALWAYS return promise without waiting, so we need to use await
     removeSpinner();
     displaySearchResults(searchResults);
 };
 // Events
 searchForm.addEventListener("submit", (e)=>handleSearchRequest(e));
 
-},{"./requestModules/searchSongs":"jBUqz","./requestModules/getSongData":"8icSn","./requestModules/getLyrics":"52zQ6","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./img/Double Ring@1x-1.0s-200px-200px.svg":"8RynB"}],"jBUqz":[function(require,module,exports) {
+},{"./requestModules/searchSongs":"jBUqz","./requestModules/getSongData":"8icSn","./requestModules/getLyrics":"52zQ6","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./img/Double Ring@1x-1.0s-200px-200px.svg":"8RynB","./requestModules/getVideo":"8k0v8"}],"jBUqz":[function(require,module,exports) {
 const searchEndpoint = "https://api.genius.com/search?q=";
 module.exports = async (searchQuery, accessToken)=>{
     const requestUrl = `${searchEndpoint}${encodeURIComponent(searchQuery)}&access_token=${accessToken}`;
     try {
         const response = await fetch(requestUrl);
-        console.log(response);
         if (!response.ok) throw new Error(`Search API Error:\n Status code: ${response.status}`);
         const data = await response.json();
+        console.log(`Search results for '${searchQuery}':`);
         console.log(data);
         return data;
     } catch (error) {
         console.log("Error trying to fetch from Search API:", error);
+        return error;
     }
 };
 
@@ -739,13 +752,14 @@ module.exports = async (songId, accessToken)=>{
     const requestUrl = `${songEndpoint}${songId}?access_token=${accessToken}`;
     try {
         const response = await fetch(requestUrl);
-        console.log(response);
-        if (!response.ok) throw new Error(`Error trying to get song data - status code : ${response.status}`);
+        if (!response.ok) throw new Error(`Error trying to get song data - status code: ${response.status}`);
         const data = await response.json();
+        console.log(`Song data for '${songId}':`);
         console.log(data);
         return data;
     } catch (error) {
-        console.log("Error trying to fetch song data API: ", error);
+        console.log(error);
+        return error;
     }
 };
 
@@ -760,6 +774,7 @@ module.exports = async (songTitle)=>{
         const lyrics = data.lyrics;
         if (data.lyrics) result = `${data.lyrics}`;
         else result = "Sorry, no lyrics available for this song.";
+        console.log(`Lyrics for ${songTitle}:`);
         console.log(result);
         return result;
     } catch (error) {
@@ -835,6 +850,23 @@ function getOrigin(url) {
 exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
 exports.getOrigin = getOrigin;
+
+},{}],"8k0v8":[function(require,module,exports) {
+const youtubeSearchEndpoint = "https://www.googleapis.com/youtube/v3/search";
+module.exports = async (searchQuery, maxResult, accessToken)=>{
+    const requestUrl = `${youtubeSearchEndpoint}?part=snippet&q=${encodeURIComponent(searchQuery)}&maxResults=${maxResult}&key=${accessToken}`;
+    try {
+        const response = await fetch(requestUrl);
+        if (!response.ok) throw new Error(`Error when trying to find youtube video: ${response.status}`);
+        const data = await response.json();
+        console.log(`Video search result for '${searchQuery}':`);
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+};
 
 },{}]},["farZc","8lqZg"], "8lqZg", "parcelRequire981d")
 
