@@ -651,25 +651,23 @@ const createSongInfoDiv = (wrapper, hitData, songData)=>{
 };
 const createSongLyricsAndVideo = (wrapper, lyrics, songVideoData)=>{
     // Only load the video if it exists
-    const videoWrapper = document.createElement("div");
-    videoWrapper.classList.add("w-full", "mb-4", "rounded-t-lg", "aspect-video", "flex", "justify-center", "items-center");
     if (songVideoData.items) {
         const videoId = songVideoData.items[0].id.videoId;
         const video = document.createElement("iframe");
         video.setAttribute("src", `https://www.youtube.com/embed/${videoId}`);
         video.setAttribute("allowfullscreen", true);
-        video.classList.add("w-full");
-        videoWrapper.append(video);
+        video.classList.add("w-full", "mb-4", "rounded-t-lg", "aspect-video");
+        wrapper.append(video);
     } else {
         const videoPlaceHolder = document.createElement("div");
-        videoPlaceHolder.classList.add("px-3");
+        videoPlaceHolder.classList.add("px-3", "w-full", "rounded-t-lg", "aspect-video", "flex", "justify-center", "items-center");
         videoPlaceHolder.innerText = `Video currently not available - ${songVideoData}`;
-        videoWrapper.append(videoPlaceHolder);
+        wrapper.append(videoPlaceHolder);
     }
     const lyricsWrapper = document.createElement("p");
     lyricsWrapper.classList.add("text-center", "p-2");
     lyricsWrapper.innerText = lyrics;
-    wrapper.append(videoWrapper, lyricsWrapper);
+    wrapper.append(lyricsWrapper);
 };
 const displaySongWrapper = async (hitData)=>{
     // Send the needed get requests first
